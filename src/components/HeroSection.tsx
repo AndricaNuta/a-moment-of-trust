@@ -82,7 +82,7 @@ const HeroSection = ({ heroImage }: HeroSectionProps) => {
               </div>
 
               {/* Small decorative polaroid */}
-              <div className="absolute -bottom-8 -left-8 bg-white p-2 shadow-lg -rotate-6 w-24 hidden md:block">
+              <div className="absolute -bottom-8 -left-8 bg-background p-2 shadow-lg -rotate-6 w-24 hidden md:block">
                 <div className="w-full aspect-square bg-secondary" />
                 <p className="font-handwritten text-sm text-center mt-1 text-muted-foreground">2008</p>
               </div>

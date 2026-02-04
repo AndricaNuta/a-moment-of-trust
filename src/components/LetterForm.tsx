@@ -284,7 +284,7 @@ Nu știu dacă ți-ai dat seama vreodată cât de mult a însemnat pentru mine..
                 {(image || audio) && (
                   <div className="flex flex-wrap gap-4 pt-4">
                     {image && (
-                      <div className="relative bg-white p-2 shadow-md rotate-2">
+                      <div className="relative bg-background p-2 shadow-md rotate-2">
                         <img
                           src={image}
                           alt="Preview"

@@ -81,7 +81,7 @@ const LetterCard = ({ letter, index }: { letter: Letter; index: number }) => {
       {(letter.image || letter.audio) && (
         <div className="flex flex-wrap gap-4 pt-2 border-t border-dashed border-border">
           {letter.image && (
-            <div className="bg-white p-1 shadow-md rotate-[-2deg]">
+            <div className="bg-background p-1 shadow-md rotate-[-2deg]">
               <img
                 src={letter.image}
                 alt="Amintire atașată"

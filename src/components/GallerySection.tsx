@@ -41,12 +41,12 @@ const GallerySection = ({ images }: GallerySectionProps) => {
             >
               {/* Tape */}
               <div 
-                className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-amber-100/80 shadow-sm z-10"
+                className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-accent/80 shadow-sm z-10"
                 style={{ transform: `rotate(${index % 2 === 0 ? -5 : 5}deg)` }}
               />
               
               {/* Polaroid frame */}
-              <div className="bg-white p-3 pb-16 shadow-lg hover:shadow-xl transition-all duration-500 group-hover:scale-105 group-hover:rotate-0">
+              <div className="bg-background p-3 pb-16 shadow-lg hover:shadow-xl transition-all duration-500 group-hover:scale-105 group-hover:rotate-0">
                 <div className="relative overflow-hidden">
                   <img
                     src={image}
@@ -55,7 +55,7 @@ const GallerySection = ({ images }: GallerySectionProps) => {
                   />
                   
                   {/* Vintage overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-amber-100/10 to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-transparent pointer-events-none" />
                 </div>
                 
                 {/* Handwritten caption */}

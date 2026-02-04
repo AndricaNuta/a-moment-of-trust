@@ -124,7 +124,7 @@ const DonationCTA = () => {
             </div>
 
             {/* Friendly explanation */}
-            <div className="bg-white/10 backdrop-blur-sm p-6 max-w-lg mx-auto">
+            <div className="bg-primary-foreground/10 backdrop-blur-sm p-6 max-w-lg mx-auto">
               <p className="font-handwritten text-lg text-primary-foreground/90 mb-2">
                 ce e 3,5%?
               </p>
