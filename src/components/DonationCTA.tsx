@@ -5,7 +5,7 @@ const DonationCTA = () => {
   return (
     <>
       {/* Floating Donation Banner - warm and friendly */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-t border-border shadow-lg">
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-t border-border shadow-lg">
         <div className="container mx-auto px-4 py-3">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
             <div className="flex items-center gap-3">
