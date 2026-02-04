@@ -43,12 +43,12 @@ const LetterCard = ({ letter, index }: { letter: Letter; index: number }) => {
 
   return (
     <article 
-      className="relative bg-white p-6 shadow-lg hover:shadow-xl transition-all duration-300 group"
+      className="relative bg-background p-6 shadow-lg hover:shadow-xl transition-all duration-300 group"
       style={{ transform: `rotate(${rotation}deg)` }}
     >
       {/* Tape decoration */}
       <div 
-        className="absolute -top-3 left-1/4 w-12 h-5 bg-amber-100/80 shadow-sm"
+        className="absolute -top-3 left-1/4 w-12 h-5 bg-accent/80 shadow-sm"
         style={{ transform: `rotate(${-rotation * 2}deg)` }}
       />
 
