@@ -9,12 +9,12 @@ const StorySection = () => {
   ];
 
   return (
-    <section id="story" className="py-14 lg:py-16 bg-card/60 relative overflow-hidden">
-      <div className="container mx-auto px-6 lg:px-12 relative">
+    <section id="story" className="py-10 sm:py-14 lg:py-16 bg-card/60 relative overflow-hidden">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative">
         <div className="max-w-4xl mx-auto">
-          <div className="text-left mb-8">
+          <div className="text-left mb-6 sm:mb-8">
             <span className="text-primary text-sm font-medium tracking-wide">cum funcționează</span>
-            <h2 className="text-2xl md:text-3xl font-semibold mt-2 mb-3">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mt-2 mb-3">
               toți am avut pe cineva
             </h2>
             <p className="text-muted-foreground max-w-xl leading-relaxed">

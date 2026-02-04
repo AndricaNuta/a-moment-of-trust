@@ -10,7 +10,7 @@ const HeroSection = ({ heroImage }: HeroSectionProps) => {
   };
 
   return (
-    <section className="relative min-h-[85vh] flex items-center overflow-hidden bg-background">
+    <section className="relative min-h-[70vh] sm:min-h-[80vh] lg:min-h-[85vh] flex items-center overflow-hidden bg-background">
       {/* Soft warm blob – one subtle shape for warmth */}
       <div
         className="absolute top-0 right-0 w-[80%] max-w-2xl h-[70%] rounded-full opacity-[0.07] pointer-events-none"
@@ -20,18 +20,18 @@ const HeroSection = ({ heroImage }: HeroSectionProps) => {
         }}
       />
 
-      <div className="container mx-auto px-6 lg:px-12 py-12 lg:py-16 relative">
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-8 sm:py-12 lg:py-16 relative">
+        <div className="grid lg:grid-cols-2 gap-6 sm:gap-10 lg:gap-16 items-center">
           <div className="order-2 lg:order-1 text-left">
             <p className="text-sm text-muted-foreground tracking-wide mb-3">
               o invitație să-ți amintești
             </p>
 
-            <h1 className="text-3xl md:text-4xl lg:text-[2.75rem] font-semibold text-foreground leading-[1.2] mb-4">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.75rem] font-semibold text-foreground leading-[1.2] mb-4">
               cine a crezut în tine când aveai 16 ani?
             </h1>
 
-            <p className="text-muted-foreground max-w-lg leading-relaxed mb-6">
+            <p className="text-muted-foreground max-w-lg leading-relaxed mb-6 text-sm sm:text-base">
               scrie-i o scrisoare — câteva cuvinte din inimă. apoi citește pe ale altora sau ajuță un adolescent să aibă pe cineva care crede în el.
             </p>
 
@@ -45,11 +45,13 @@ const HeroSection = ({ heroImage }: HeroSectionProps) => {
           </div>
 
           <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
-            <div className="max-w-sm w-full">
+            <div className="w-full max-w-[160px] sm:max-w-[260px] md:max-w-[320px] lg:max-w-sm mx-auto lg:mx-0">
               <img
                 src={heroImage}
                 alt="Un adolescent cu privirea spre viitor"
-                className="w-full aspect-[4/5] object-cover rounded-2xl shadow-lg photo-warm"
+                className="w-full aspect-[4/5] object-cover rounded-2xl shadow-lg photo-warm max-w-full"
+                fetchPriority="high"
+                decoding="async"
               />
             </div>
           </div>

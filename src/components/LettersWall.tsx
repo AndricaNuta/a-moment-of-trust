@@ -91,7 +91,8 @@ const LetterCard = ({ letter, index = 0 }: { letter: Letter; index?: number }) =
                 <img
                   src={letter.image}
                   alt="Atașat"
-                  className="w-20 h-20 object-cover photo-bw"
+                  className="w-20 h-20 object-cover photo-bw max-w-full"
+                  loading="lazy"
                 />
               </div>
             )}
@@ -126,8 +127,8 @@ const LetterCard = ({ letter, index = 0 }: { letter: Letter; index?: number }) =
 const LettersWall = ({ letters }: LettersWallProps) => {
   if (letters.length === 0) {
     return (
-      <section id="letters" className="py-14 lg:py-16 bg-background">
-        <div className="container mx-auto px-6 lg:px-12">
+      <section id="letters" className="py-10 sm:py-14 lg:py-16 bg-background">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-12">
           <div className="max-w-xl mx-auto text-left">
             <div className="note-paper rounded-lg border border-amber-200/60 p-6 text-left">
               <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1.5 mb-4">
@@ -149,23 +150,23 @@ const LettersWall = ({ letters }: LettersWallProps) => {
   }
 
   return (
-    <section id="letters" className="py-14 lg:py-16 bg-background relative overflow-hidden">
-      <div className="container mx-auto px-6 lg:px-12 relative">
-        <div className="text-left mb-10">
-          <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1.5 mb-3">
+    <section id="letters" className="py-10 sm:py-14 lg:py-16 bg-background relative overflow-hidden">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative">
+        <div className="text-left mb-8 sm:mb-10">
+          <div className="inline-flex flex-wrap items-center gap-2 rounded-full bg-primary/10 px-3 py-1.5 mb-3">
             <span className="text-[11px] font-semibold tracking-wider text-primary uppercase">
               ideo ideis
             </span>
             <span className="text-muted-foreground/70">·</span>
             <span className="text-xs text-muted-foreground font-medium">peretele amintirilor</span>
           </div>
-          <h2 className="text-2xl md:text-3xl font-semibold mt-2 mb-2">scrisori din inimă</h2>
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mt-2 mb-2">scrisori din inimă</h2>
           <p className="text-muted-foreground text-sm max-w-lg">
             povești despre încredere. un singur om poate schimba totul.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {letters.map((letter, index) => (
             <LetterCard key={letter.id} letter={letter} index={index} />
           ))}

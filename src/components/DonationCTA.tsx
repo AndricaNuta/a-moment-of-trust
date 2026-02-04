@@ -3,10 +3,10 @@ import { Button } from "@/components/ui/button";
 
 const DonationCTA = () => {
   return (
-    <section id="donate" className="py-14 lg:py-16 bg-primary text-primary-foreground relative overflow-hidden">
-        <div className="container mx-auto px-6 lg:px-12 relative">
+    <section id="donate" className="py-10 sm:py-14 lg:py-16 bg-primary text-primary-foreground relative overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-2xl md:text-3xl font-semibold mb-3">fii acea persoană care crede</h2>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-3">fii acea persoană care crede</h2>
             <p className="text-primary-foreground/90 text-sm max-w-lg mx-auto mb-6">
               donație sau 3,5% din impozit → adolescenți care au pe cineva care crede în ei (tabere, festivaluri, artă).
             </p>
