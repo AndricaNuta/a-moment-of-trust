@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Mic, MicOff, Send, X, Image, FileAudio, Sparkles } from "lucide-react";
+import { Mic, MicOff, Send, X, Image, FileAudio, Sparkles, Play, Pause } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -24,13 +24,26 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
   const [image, setImage] = useState<string | null>(null);
   const [audio, setAudio] = useState<string | null>(null);
   const [isRecording, setIsRecording] = useState(false);
+  const [recordingElapsedSeconds, setRecordingElapsedSeconds] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+  const [isPlayingPreview, setIsPlayingPreview] = useState(false);
+
   const imageInputRef = useRef<HTMLInputElement>(null);
+  const audioPreviewRef = useRef<HTMLAudioElement>(null);
   const audioInputRef = useRef<HTMLInputElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
-  
+  const maxDurationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const recordingIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const MAX_RECORDING_SECONDS = 90; // 1.5 minutes
+
+  const formatRecordingTime = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m}:${s.toString().padStart(2, "0")}`;
+  };
+
   const { toast } = useToast();
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,14 +102,28 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
           setAudio(reader.result as string);
         };
         reader.readAsDataURL(audioBlob);
-        stream.getTracks().forEach(track => track.stop());
+        stream.getTracks().forEach((track) => track.stop());
       };
 
       mediaRecorder.start();
       setIsRecording(true);
+      setRecordingElapsedSeconds(0);
+
+      recordingIntervalRef.current = setInterval(() => {
+        setRecordingElapsedSeconds((prev) => Math.min(prev + 1, MAX_RECORDING_SECONDS));
+      }, 1000);
+
+      maxDurationTimeoutRef.current = setTimeout(() => {
+        stopRecording();
+        toast({
+          title: "Limită atinsă",
+          description: "Înregistrarea e limitată la 1,5 minute.",
+          variant: "default",
+        });
+      }, MAX_RECORDING_SECONDS * 1000);
     } catch {
       toast({
-        title: "Ups!",
+        title: "Ups",
         description: "Nu am putut accesa microfonul. Verifică permisiunile browserului.",
         variant: "destructive",
       });
@@ -104,6 +131,15 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
   };
 
   const stopRecording = () => {
+    if (maxDurationTimeoutRef.current) {
+      clearTimeout(maxDurationTimeoutRef.current);
+      maxDurationTimeoutRef.current = null;
+    }
+    if (recordingIntervalRef.current) {
+      clearInterval(recordingIntervalRef.current);
+      recordingIntervalRef.current = null;
+    }
+    setRecordingElapsedSeconds(0);
     if (mediaRecorderRef.current && isRecording) {
       mediaRecorderRef.current.stop();
       setIsRecording(false);
@@ -112,10 +148,10 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!content.trim()) {
       toast({
-        title: "Hei, scrisoarea e goală!",
+        title: "Hei, scrisoarea e goală",
         description: "Scrie câteva cuvinte pentru persoana care a crezut în tine.",
         variant: "destructive",
       });
@@ -123,9 +159,9 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
     }
 
     setIsSubmitting(true);
-    
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     onSubmit({
       author: author.trim() || "cineva care își amintește",
       content: content.trim(),
@@ -140,42 +176,29 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
     setIsSubmitting(false);
 
     toast({
-      title: "Mulțumim frumos! ♡",
-      description: "Scrisoarea ta a zburat spre peretele amintirilor.",
+      title: "Mulțumim",
+      description: "Scrisoarea ta a fost adăugată pe perete.",
     });
   };
 
   return (
-    <section id="write" className="py-24 bg-card relative overflow-hidden">
-      {/* Decorative notebook margin */}
-      <div className="absolute left-8 md:left-16 top-0 bottom-0 w-[2px] bg-primary/20 hidden lg:block" />
-      
-      {/* Floating decoration */}
-      <div className="absolute top-20 right-10 font-handwritten text-8xl text-primary/5 hidden lg:block">
-        ✉
-      </div>
-
+    <section id="write" className="py-14 lg:py-16 bg-card/60 relative overflow-hidden">
       <div className="container mx-auto px-6 lg:px-12">
         <div className="max-w-2xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <Sparkles className="w-8 h-8 text-primary mx-auto mb-4" />
-            <h2 className="font-handwritten text-4xl md:text-5xl text-foreground mb-4">
-              e rândul tău
+          <div className="text-left mb-8">
+            <Sparkles className="w-6 h-6 text-primary mb-2" />
+            <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-2">
+              scrie o scrisoare
             </h2>
-            <p className="text-muted-foreground leading-relaxed">
-              scrie-i acelei persoane. nu trebuie să fie perfect, trebuie doar să fie din inimă.
-              poate nu o să ajungă la ea niciodată, dar tu o să știi că ai spus-o.
+            <p className="text-muted-foreground text-sm leading-relaxed">
+              câteva cuvinte din inimă — nu trebuie perfect. poate nu ajunge la ea, dar tu știi că ai spus-o.
             </p>
           </div>
 
-          {/* Letter form - notebook style */}
           <form onSubmit={handleSubmit} className="relative">
-            {/* Paper effect */}
-            <div className="bg-background shadow-lg p-8 md:p-12 paper-texture">
-              {/* "Dear..." line */}
-              <div className="mb-8">
-                <label className="font-handwritten text-lg text-muted-foreground">
+            <div className="bg-background border border-border rounded-xl p-6 md:p-8 shadow-sm">
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-muted-foreground mb-2">
                   de la:
                 </label>
                 <Input
@@ -183,40 +206,26 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
                   value={author}
                   onChange={(e) => setAuthor(e.target.value)}
                   placeholder="numele tău (sau lasă gol)"
-                  className="font-handwritten text-xl bg-transparent border-0 border-b-2 border-dashed border-border focus:border-primary rounded-none px-0 focus-visible:ring-0"
+                  className="border-border"
                 />
               </div>
 
-              {/* Letter content */}
-              <div className="mb-8">
-                <label className="font-handwritten text-lg text-muted-foreground">
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-muted-foreground mb-2">
                   scrisoarea ta:
                 </label>
                 <Textarea
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
-                  placeholder="Dragă [persoană],
-
-Vreau să-ți mulțumesc pentru acel moment când...
-
-Nu știu dacă ți-ai dat seama vreodată cât de mult a însemnat pentru mine..."
-                  className="font-handwritten text-xl bg-transparent border-0 focus-visible:ring-0 min-h-[250px] resize-none leading-8 placeholder:text-muted-foreground/40"
-                  style={{ 
-                    backgroundImage: 'repeating-linear-gradient(transparent, transparent 31px, hsl(var(--border)) 31px, hsl(var(--border)) 32px)',
-                    lineHeight: '32px',
-                    paddingTop: '0'
-                  }}
+                  placeholder={"Dragă [persoană],\n\nVreau să-ți mulțumesc pentru acel moment când...\n\nNu știu dacă ți-ai dat seama vreodată cât de mult a însemnat pentru mine."}
+                  className="border-border min-h-[200px] resize-none leading-relaxed"
                 />
               </div>
 
-              {/* Media attachments */}
               <div className="space-y-4">
-                <p className="font-handwritten text-lg text-muted-foreground">
-                  atașează o amintire? ♡
-                </p>
+                <p className="text-sm font-medium text-muted-foreground">atașează o amintire?</p>
 
                 <div className="flex flex-wrap gap-3">
-                  {/* Image Upload */}
                   <div>
                     <input
                       type="file"
@@ -230,14 +239,13 @@ Nu știu dacă ți-ai dat seama vreodată cât de mult a însemnat pentru mine..
                       variant="outline"
                       size="sm"
                       onClick={() => imageInputRef.current?.click()}
-                      className="gap-2 font-handwritten text-lg"
+                      className="gap-2"
                     >
                       <Image className="w-4 h-4" />
                       {image ? "altă poză" : "o poză"}
                     </Button>
                   </div>
 
-                  {/* Audio Upload */}
                   <div>
                     <input
                       type="file"
@@ -251,25 +259,27 @@ Nu știu dacă ți-ai dat seama vreodată cât de mult a însemnat pentru mine..
                       variant="outline"
                       size="sm"
                       onClick={() => audioInputRef.current?.click()}
-                      className="gap-2 font-handwritten text-lg"
+                      className="gap-2"
                     >
                       <FileAudio className="w-4 h-4" />
                       {audio ? "alt fișier" : "un audio"}
                     </Button>
                   </div>
 
-                  {/* Record Audio */}
                   <Button
                     type="button"
                     variant="outline"
                     size="sm"
                     onClick={isRecording ? stopRecording : startRecording}
-                    className={`gap-2 font-handwritten text-lg ${isRecording ? "text-primary border-primary animate-pulse" : ""}`}
+                    className={`gap-2 ${isRecording ? "text-primary border-primary" : ""}`}
                   >
                     {isRecording ? (
                       <>
                         <MicOff className="w-4 h-4" />
                         oprește
+                        <span className="tabular-nums text-muted-foreground">
+                          {formatRecordingTime(recordingElapsedSeconds)} / {formatRecordingTime(MAX_RECORDING_SECONDS)}
+                        </span>
                       </>
                     ) : (
                       <>
@@ -280,50 +290,81 @@ Nu știu dacă ți-ai dat seama vreodată cât de mult a însemnat pentru mine..
                   </Button>
                 </div>
 
-                {/* Preview uploaded media */}
                 {(image || audio) && (
                   <div className="flex flex-wrap gap-4 pt-4">
                     {image && (
-                      <div className="relative bg-background p-2 shadow-md rotate-2">
+                      <div className="relative border border-border rounded-lg overflow-hidden">
                         <img
                           src={image}
                           alt="Preview"
-                          className="h-24 w-24 object-cover sepia-[0.2]"
+                          className="h-24 w-24 object-cover photo-bw"
                         />
                         <button
                           type="button"
                           onClick={() => setImage(null)}
-                          className="absolute -top-2 -right-2 w-6 h-6 bg-primary text-primary-foreground flex items-center justify-center shadow-sm"
+                          className="absolute top-0 right-0 w-6 h-6 rounded-bl-md bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90"
                         >
                           <X className="w-3 h-3" />
                         </button>
                       </div>
                     )}
                     {audio && (
-                      <div className="relative bg-secondary p-4 flex items-center gap-3">
-                        <FileAudio className="w-6 h-6 text-primary" />
-                        <span className="font-handwritten text-lg text-muted-foreground">
-                          mesaj audio ♪
-                        </span>
+                      <div className="relative bg-muted border border-border rounded-lg p-4 flex items-center gap-3 flex-wrap">
                         <button
                           type="button"
-                          onClick={() => setAudio(null)}
-                          className="w-6 h-6 bg-primary text-primary-foreground flex items-center justify-center"
+                          onClick={() => {
+                            if (audioPreviewRef.current) {
+                              if (isPlayingPreview) {
+                                audioPreviewRef.current.pause();
+                              } else {
+                                audioPreviewRef.current.play();
+                              }
+                              setIsPlayingPreview(!isPlayingPreview);
+                            }
+                          }}
+                          className="flex items-center gap-2 rounded-md bg-primary text-primary-foreground px-3 py-2 hover:bg-primary/90"
+                        >
+                          {isPlayingPreview ? (
+                            <Pause className="w-4 h-4" />
+                          ) : (
+                            <Play className="w-4 h-4" />
+                          )}
+                          <span className="text-sm">
+                            {isPlayingPreview ? "pauză" : "ascultă"}
+                          </span>
+                        </button>
+                        <span className="text-sm text-muted-foreground">mesaj audio</span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            audioPreviewRef.current?.pause();
+                            setIsPlayingPreview(false);
+                            setAudio(null);
+                          }}
+                          className="w-6 h-6 rounded-md bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90"
+                          aria-label="Elimină audio"
                         >
                           <X className="w-3 h-3" />
                         </button>
+                        <audio
+                          ref={audioPreviewRef}
+                          src={audio}
+                          onEnded={() => setIsPlayingPreview(false)}
+                          onPause={() => setIsPlayingPreview(false)}
+                          onPlay={() => setIsPlayingPreview(true)}
+                          className="hidden"
+                        />
                       </div>
                     )}
                   </div>
                 )}
               </div>
 
-              {/* Submit - stamp style */}
-              <div className="mt-10 flex justify-end">
+              <div className="mt-8 flex justify-end">
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-handwritten text-xl px-8 py-6 animate-gentle-pulse"
+                  className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6"
                 >
                   {isSubmitting ? (
                     "se trimite..."

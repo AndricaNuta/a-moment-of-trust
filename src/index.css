@@ -2,48 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Ideo Ideis - Nostalgic Campaign Design System
-   A warm, friendly, memory-evoking palette
-   Brand Red #E7004C balanced with warm creams and paper textures
+/* Ideo Ideis – brand-aligned but warm & friendly
+   Typography: DM Sans (Söhne fallback). Colours: #E7004C, dark grays. Soft geometry, warm neutrals.
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
 
 @layer base {
   :root {
-    /* Warm nostalgic palette */
-    --background: 35 30% 96%; /* warm cream paper */
-    --foreground: 25 20% 18%; /* warm dark brown, not harsh black */
+    /* Warm off-white (friendly, not cold) */
+    --background: 40 25% 98%;
+    --foreground: 230 12% 20%;
 
-    --card: 38 40% 94%; /* slightly warmer card */
-    --card-foreground: 25 20% 18%;
+    --card: 40 20% 97%;
+    --card-foreground: 230 12% 20%;
 
-    --popover: 38 40% 94%;
-    --popover-foreground: 25 20% 18%;
+    --popover: 40 25% 99%;
+    --popover-foreground: 230 12% 20%;
 
-    /* Ideo Red - warm and inviting */
-    --primary: 343 100% 45%; /* #E7004C */
+    --primary: 343 100% 45%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 35 25% 88%; /* warm beige */
-    --secondary-foreground: 25 20% 25%;
+    --secondary: 40 20% 94%;
+    --secondary-foreground: 230 12% 22%;
 
-    --muted: 35 20% 90%;
-    --muted-foreground: 25 15% 45%;
+    --muted: 40 15% 93%;
+    --muted-foreground: 230 8% 42%;
 
-    --accent: 35 50% 85%; /* golden highlight */
-    --accent-foreground: 25 20% 18%;
+    --accent: 40 25% 92%;
+    --accent-foreground: 230 12% 20%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 35 20% 85%;
-    --input: 35 25% 92%;
+    --border: 40 15% 88%;
+    --input: 40 18% 92%;
     --ring: 343 100% 45%;
 
-    --radius: 4px; /* Slightly softer, but not too rounded */
+    /* Soft, friendly corners */
+    --radius: 0.625rem; /* 10px */
 
-    /* Ideo Pillar Colors */
     --ideo-red: 343 100% 45%;
     --ideo-teal: 178 100% 29%;
     --ideo-blue: 220 100% 32%;
@@ -51,19 +49,13 @@
     --ideo-pink: 316 97% 46%;
     --ideo-cyan: 203 100% 39%;
 
-    /* Nostalgic extras */
-    --paper: 40 35% 95%;
-    --ink: 25 30% 20%;
-    --stamp: 343 80% 50%;
-    --postmark: 25 20% 60%;
-
-    --sidebar-background: 35 30% 96%;
-    --sidebar-foreground: 25 20% 18%;
+    --sidebar-background: 40 25% 98%;
+    --sidebar-foreground: 230 12% 20%;
     --sidebar-primary: 343 100% 45%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 35 25% 88%;
-    --sidebar-accent-foreground: 25 20% 25%;
-    --sidebar-border: 35 20% 85%;
+    --sidebar-accent: 40 20% 94%;
+    --sidebar-accent-foreground: 230 12% 22%;
+    --sidebar-border: 40 15% 88%;
     --sidebar-ring: 343 100% 45%;
   }
 }
@@ -75,87 +67,49 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    line-height: 1.65;
   }
 
-  /* Handwritten style for emotional headlines */
-  .font-handwritten {
-    font-family: 'Caveat', cursive;
-  }
-
-  /* Paper texture effect */
-  .paper-texture {
-    background-image: 
-      linear-gradient(90deg, transparent 79px, hsl(var(--border)) 79px, hsl(var(--border)) 81px, transparent 81px),
-      linear-gradient(hsl(var(--border)) 1px, transparent 1px);
-    background-size: 100% 28px;
-  }
-
-  /* Nostalgic photo style */
-  .photo-nostalgic {
-    @apply relative;
-    box-shadow: 
-      0 4px 6px -1px rgba(0,0,0,0.1),
-      0 2px 4px -1px rgba(0,0,0,0.06),
-      inset 0 0 60px rgba(0,0,0,0.03);
-  }
-
-  .photo-nostalgic::after {
-    content: '';
-    @apply absolute inset-0 pointer-events-none;
-    background: linear-gradient(
-      135deg,
-      rgba(255,248,230,0.15) 0%,
-      transparent 50%,
-      rgba(0,0,0,0.05) 100%
-    );
+  h1, h2, h3 {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 600;
+    line-height: 1.25;
   }
 }
 
 @layer utilities {
-  /* Tape effect for photos */
-  .tape-effect::before {
-    content: '';
-    @apply absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-amber-100/80 rotate-[-2deg];
-    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-  }
-
-  /* Stamp/postmark decorations */
-  .stamp-decoration {
-    @apply border-2 border-dashed border-primary/40 p-1;
-  }
-
-  /* Handwritten underline */
-  .underline-hand {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 12'%3E%3Cpath d='M2 8 Q 25 2, 50 8 T 98 6' stroke='%23E7004C' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: bottom;
-    background-size: 100% 8px;
-    padding-bottom: 8px;
-  }
-
-  /* Scroll smooth */
   .scroll-smooth {
     scroll-behavior: smooth;
   }
 
-  /* Floating animation for decorative elements */
-  @keyframes float {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-10px) rotate(2deg); }
+  /* Soft B&W – still coherent but less harsh */
+  .photo-bw {
+    filter: grayscale(0.85) contrast(1.02);
   }
 
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
+  /* Hero: warm, slightly soft (optional – use where you want warmth) */
+  .photo-warm {
+    filter: sepia(0.08) saturate(0.95);
   }
 
-  /* Gentle pulse for CTAs */
-  @keyframes gentle-pulse {
-    0%, 100% { box-shadow: 0 0 0 0 hsl(var(--primary) / 0.3); }
-    50% { box-shadow: 0 0 0 8px hsl(var(--primary) / 0); }
+  /* Note / letter paper – warm, slight texture feel */
+  .note-paper {
+    background: linear-gradient(
+      180deg,
+      hsl(40 28% 98%) 0%,
+      hsl(42 22% 96%) 100%
+    );
+    box-shadow:
+      0 1px 2px hsl(40 15% 85% / 0.6),
+      0 4px 12px hsl(0 0% 0% / 0.06),
+      0 2px 4px hsl(0 0% 0% / 0.04);
   }
 
-  .animate-gentle-pulse {
-    animation: gentle-pulse 2s ease-in-out infinite;
+  .note-paper:hover {
+    box-shadow:
+      0 1px 2px hsl(40 15% 85% / 0.6),
+      0 8px 24px hsl(0 0% 0% / 0.08),
+      0 4px 8px hsl(0 0% 0% / 0.05);
   }
 }

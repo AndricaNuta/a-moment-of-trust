@@ -1,25 +1,17 @@
-import { Heart } from "lucide-react";
-
 const Footer = () => {
   return (
     <footer className="py-12 bg-card border-t border-border mb-20 md:mb-24">
       <div className="container mx-auto px-6 lg:px-12">
         <div className="flex flex-col items-center gap-6 text-center">
-          {/* Logo */}
           <div className="flex items-center gap-2">
-            <Heart className="w-5 h-5 text-primary fill-primary/30" />
-            <span className="font-handwritten text-2xl text-foreground">
-              ideo ideis
-            </span>
+            <span className="text-xl font-semibold text-foreground">ideo ideis</span>
           </div>
 
-          {/* Tagline */}
-          <p className="font-handwritten text-lg text-muted-foreground max-w-md">
-            un manifest artistic și social care susține adolescenții 
-            din România în a se exprima așa cum sunt
+          <p className="text-muted-foreground max-w-md text-sm leading-relaxed">
+            un manifest artistic și social care susține adolescenții din România în a se exprima
+            așa cum sunt
           </p>
 
-          {/* Links */}
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
             <a
               href="https://ideoideis.ro"
@@ -55,10 +47,8 @@ const Footer = () => {
             </a>
           </div>
 
-          {/* Copyright with heart */}
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} ideo ideis · făcut cu{" "}
-            <span className="text-primary">♡</span> pentru adolescenții din România
+            © {new Date().getFullYear()} ideo ideis · făcut cu drag pentru adolescenții din România
           </p>
         </div>
       </div>

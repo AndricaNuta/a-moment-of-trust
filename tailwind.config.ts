@@ -14,7 +14,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['DM Sans', 'system-ui', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -69,15 +69,6 @@ export default {
           pink: "hsl(var(--ideo-pink))",
           cyan: "hsl(var(--ideo-cyan))",
         },
-        // Nostalgic palette extras
-        paper: "hsl(var(--paper))",
-        ink: "hsl(var(--ink))",
-        stamp: "hsl(var(--stamp))",
-        postmark: "hsl(var(--postmark))",
-      },
-      fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        handwritten: ['Caveat', 'cursive'],
       },
       borderRadius: {
         lg: "var(--radius)",

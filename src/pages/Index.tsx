@@ -5,7 +5,6 @@ import GallerySection from "@/components/GallerySection";
 import LetterForm from "@/components/LetterForm";
 import LettersWall from "@/components/LettersWall";
 import DonationCTA from "@/components/DonationCTA";
-import Footer from "@/components/Footer";
 
 // Import images
 import heroImage from "@/assets/hero-teen-1.jpg";
@@ -80,7 +79,6 @@ const Index = () => {
       <LetterForm onSubmit={handleLetterSubmit} />
       <LettersWall letters={letters} />
       <DonationCTA />
-      <Footer />
     </main>
   );
 };
