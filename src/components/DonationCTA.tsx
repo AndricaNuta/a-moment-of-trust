@@ -95,7 +95,7 @@ const DonationCTA = () => {
               <Button
                 asChild
                 size="lg"
-                className="bg-white text-primary hover:bg-white/90 font-handwritten text-xl gap-2"
+                className="bg-background text-primary hover:bg-background/90 font-handwritten text-xl gap-2"
               >
                 <a
                   href="https://ideoideis.ro/implica-te/"
