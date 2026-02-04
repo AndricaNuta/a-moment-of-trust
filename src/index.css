@@ -2,49 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Ideo Ideis Design System
-   Brand Colors: Red #E7004C, Dark Greys #222324 #2c2d34
-   Typography: Sharp, lowercase headlines, left-aligned
-   Style: Minimalist, geometric, emotional, youth-focused
+/* Ideo Ideis - Nostalgic Campaign Design System
+   A warm, friendly, memory-evoking palette
+   Brand Red #E7004C balanced with warm creams and paper textures
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    /* Ideo Ideis Brand Colors */
-    --background: 220 10% 14%; /* #222324 dark charcoal */
-    --foreground: 40 20% 95%; /* warm off-white */
+    /* Warm nostalgic palette */
+    --background: 35 30% 96%; /* warm cream paper */
+    --foreground: 25 20% 18%; /* warm dark brown, not harsh black */
 
-    --card: 220 8% 18%; /* #2c2d34 slightly lighter dark */
-    --card-foreground: 40 20% 95%;
+    --card: 38 40% 94%; /* slightly warmer card */
+    --card-foreground: 25 20% 18%;
 
-    --popover: 220 8% 18%;
-    --popover-foreground: 40 20% 95%;
+    --popover: 38 40% 94%;
+    --popover-foreground: 25 20% 18%;
 
-    /* Ideo Red - Primary brand color */
+    /* Ideo Red - warm and inviting */
     --primary: 343 100% 45%; /* #E7004C */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 8% 22%;
-    --secondary-foreground: 40 20% 90%;
+    --secondary: 35 25% 88%; /* warm beige */
+    --secondary-foreground: 25 20% 25%;
 
-    --muted: 220 8% 25%;
-    --muted-foreground: 220 10% 60%;
+    --muted: 35 20% 90%;
+    --muted-foreground: 25 15% 45%;
 
-    --accent: 343 100% 45%; /* same as primary for consistency */
-    --accent-foreground: 0 0% 100%;
+    --accent: 35 50% 85%; /* golden highlight */
+    --accent-foreground: 25 20% 18%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 8% 25%;
-    --input: 220 8% 22%;
+    --border: 35 20% 85%;
+    --input: 35 25% 92%;
     --ring: 343 100% 45%;
 
-    --radius: 0px; /* Sharp corners - brand requirement */
+    --radius: 4px; /* Slightly softer, but not too rounded */
 
-    /* Ideo Pillar Colors for accents */
+    /* Ideo Pillar Colors */
     --ideo-red: 343 100% 45%;
     --ideo-teal: 178 100% 29%;
     --ideo-blue: 220 100% 32%;
@@ -52,32 +51,20 @@
     --ideo-pink: 316 97% 46%;
     --ideo-cyan: 203 100% 39%;
 
-    --sidebar-background: 220 10% 14%;
-    --sidebar-foreground: 40 20% 95%;
+    /* Nostalgic extras */
+    --paper: 40 35% 95%;
+    --ink: 25 30% 20%;
+    --stamp: 343 80% 50%;
+    --postmark: 25 20% 60%;
+
+    --sidebar-background: 35 30% 96%;
+    --sidebar-foreground: 25 20% 18%;
     --sidebar-primary: 343 100% 45%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 8% 22%;
-    --sidebar-accent-foreground: 40 20% 95%;
-    --sidebar-border: 220 8% 25%;
+    --sidebar-accent: 35 25% 88%;
+    --sidebar-accent-foreground: 25 20% 25%;
+    --sidebar-border: 35 20% 85%;
     --sidebar-ring: 343 100% 45%;
-  }
-
-  /* Light mode - using dark as default for Ideo brand */
-  .light {
-    --background: 40 20% 98%;
-    --foreground: 220 10% 14%;
-    --card: 0 0% 100%;
-    --card-foreground: 220 10% 14%;
-    --primary: 343 100% 45%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 220 8% 94%;
-    --secondary-foreground: 220 10% 14%;
-    --muted: 220 8% 92%;
-    --muted-foreground: 220 8% 40%;
-    --accent: 343 100% 45%;
-    --accent-foreground: 0 0% 100%;
-    --border: 220 8% 88%;
-    --input: 220 8% 88%;
   }
 }
 
@@ -91,37 +78,84 @@
     font-family: 'Inter', system-ui, sans-serif;
   }
 
-  /* Ideo Typography - lowercase, bold, clear */
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-semibold tracking-tight;
-    text-transform: lowercase;
+  /* Handwritten style for emotional headlines */
+  .font-handwritten {
+    font-family: 'Caveat', cursive;
   }
 
-  /* Geometric accent elements */
-  .ideo-accent-line {
-    @apply h-1 bg-primary;
+  /* Paper texture effect */
+  .paper-texture {
+    background-image: 
+      linear-gradient(90deg, transparent 79px, hsl(var(--border)) 79px, hsl(var(--border)) 81px, transparent 81px),
+      linear-gradient(hsl(var(--border)) 1px, transparent 1px);
+    background-size: 100% 28px;
   }
 
-  .ideo-accent-bar {
-    @apply w-1 bg-primary;
+  /* Nostalgic photo style */
+  .photo-nostalgic {
+    @apply relative;
+    box-shadow: 
+      0 4px 6px -1px rgba(0,0,0,0.1),
+      0 2px 4px -1px rgba(0,0,0,0.06),
+      inset 0 0 60px rgba(0,0,0,0.03);
+  }
+
+  .photo-nostalgic::after {
+    content: '';
+    @apply absolute inset-0 pointer-events-none;
+    background: linear-gradient(
+      135deg,
+      rgba(255,248,230,0.15) 0%,
+      transparent 50%,
+      rgba(0,0,0,0.05) 100%
+    );
   }
 }
 
 @layer utilities {
-  /* Ideo geometric decorations */
-  .ideo-geometric-dots::before {
-    content: '■ ■ ■';
-    @apply text-primary text-xs tracking-widest;
+  /* Tape effect for photos */
+  .tape-effect::before {
+    content: '';
+    @apply absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-amber-100/80 rotate-[-2deg];
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
   }
 
-  /* Letter spacing for headlines */
-  .ideo-headline {
-    letter-spacing: -0.02em;
-    line-height: 1.1;
+  /* Stamp/postmark decorations */
+  .stamp-decoration {
+    @apply border-2 border-dashed border-primary/40 p-1;
   }
 
-  /* Smooth scroll */
+  /* Handwritten underline */
+  .underline-hand {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 12'%3E%3Cpath d='M2 8 Q 25 2, 50 8 T 98 6' stroke='%23E7004C' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: bottom;
+    background-size: 100% 8px;
+    padding-bottom: 8px;
+  }
+
+  /* Scroll smooth */
   .scroll-smooth {
     scroll-behavior: smooth;
+  }
+
+  /* Floating animation for decorative elements */
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(2deg); }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  /* Gentle pulse for CTAs */
+  @keyframes gentle-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 hsl(var(--primary) / 0.3); }
+    50% { box-shadow: 0 0 0 8px hsl(var(--primary) / 0); }
+  }
+
+  .animate-gentle-pulse {
+    animation: gentle-pulse 2s ease-in-out infinite;
   }
 }

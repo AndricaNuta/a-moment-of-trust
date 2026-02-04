@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Upload, Mic, MicOff, Send, X, Image, FileAudio } from "lucide-react";
+import { Mic, MicOff, Send, X, Image, FileAudio, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -94,10 +94,10 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
 
       mediaRecorder.start();
       setIsRecording(true);
-    } catch (error) {
+    } catch {
       toast({
-        title: "Eroare",
-        description: "Nu am putut accesa microfonul. Verifică permisiunile.",
+        title: "Ups!",
+        description: "Nu am putut accesa microfonul. Verifică permisiunile browserului.",
         variant: "destructive",
       });
     }
@@ -115,8 +115,8 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
     
     if (!content.trim()) {
       toast({
-        title: "Scrisoare goală",
-        description: "Te rugăm să scrii câteva cuvinte în scrisoare.",
+        title: "Hei, scrisoarea e goală!",
+        description: "Scrie câteva cuvinte pentru persoana care a crezut în tine.",
         variant: "destructive",
       });
       return;
@@ -124,17 +124,15 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
 
     setIsSubmitting(true);
     
-    // Simulate submission delay
     await new Promise(resolve => setTimeout(resolve, 1000));
     
     onSubmit({
-      author: author.trim() || "Anonim",
+      author: author.trim() || "cineva care își amintește",
       content: content.trim(),
       image: image || undefined,
       audio: audio || undefined,
     });
 
-    // Reset form
     setAuthor("");
     setContent("");
     setImage(null);
@@ -142,182 +140,201 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
     setIsSubmitting(false);
 
     toast({
-      title: "Mulțumim!",
-      description: "Scrisoarea ta a fost trimisă cu succes.",
+      title: "Mulțumim frumos! ♡",
+      description: "Scrisoarea ta a zburat spre peretele amintirilor.",
     });
   };
 
   return (
-    <section id="write" className="py-24 bg-card">
+    <section id="write" className="py-24 bg-card relative overflow-hidden">
+      {/* Decorative notebook margin */}
+      <div className="absolute left-8 md:left-16 top-0 bottom-0 w-[2px] bg-primary/20 hidden lg:block" />
+      
+      {/* Floating decoration */}
+      <div className="absolute top-20 right-10 font-handwritten text-8xl text-primary/5 hidden lg:block">
+        ✉
+      </div>
+
       <div className="container mx-auto px-6 lg:px-12">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-2xl mx-auto">
           {/* Header */}
-          <div className="mb-12">
-            <div className="flex gap-2 mb-6">
-              <span className="w-2 h-2 bg-primary" />
-              <span className="w-2 h-2 bg-primary/60" />
-            </div>
-            <h2 className="text-3xl md:text-4xl font-semibold ideo-headline mb-4">
-              scrie-i o scrisoare
+          <div className="text-center mb-12">
+            <Sparkles className="w-8 h-8 text-primary mx-auto mb-4" />
+            <h2 className="font-handwritten text-4xl md:text-5xl text-foreground mb-4">
+              e rândul tău
             </h2>
-            <p className="text-muted-foreground">
-              scrisoarea ta către persoana care a avut încredere în tine când 
-              aveai 16 ani. poate fi scurtă, poate fi lungă. poate fi personală 
-              sau poate fi o reflecție. important e să fie sinceră.
+            <p className="text-muted-foreground leading-relaxed">
+              scrie-i acelei persoane. nu trebuie să fie perfect, trebuie doar să fie din inimă.
+              poate nu o să ajungă la ea niciodată, dar tu o să știi că ai spus-o.
             </p>
           </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Author Name */}
-            <div>
-              <label className="block text-sm text-muted-foreground mb-2">
-                numele tău (opțional)
-              </label>
-              <Input
-                type="text"
-                value={author}
-                onChange={(e) => setAuthor(e.target.value)}
-                placeholder="Lasă gol pentru a rămâne anonim"
-                className="bg-secondary border-border focus:border-primary"
-              />
-            </div>
+          {/* Letter form - notebook style */}
+          <form onSubmit={handleSubmit} className="relative">
+            {/* Paper effect */}
+            <div className="bg-background shadow-lg p-8 md:p-12 paper-texture">
+              {/* "Dear..." line */}
+              <div className="mb-8">
+                <label className="font-handwritten text-lg text-muted-foreground">
+                  de la:
+                </label>
+                <Input
+                  type="text"
+                  value={author}
+                  onChange={(e) => setAuthor(e.target.value)}
+                  placeholder="numele tău (sau lasă gol)"
+                  className="font-handwritten text-xl bg-transparent border-0 border-b-2 border-dashed border-border focus:border-primary rounded-none px-0 focus-visible:ring-0"
+                />
+              </div>
 
-            {/* Letter Content */}
-            <div>
-              <label className="block text-sm text-muted-foreground mb-2">
-                scrisoarea ta
-              </label>
-              <Textarea
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                placeholder="Dragă [persoană],&#10;&#10;Îți mulțumesc pentru că ai avut încredere în mine când..."
-                className="bg-secondary border-border focus:border-primary min-h-[200px] resize-none"
-              />
-            </div>
+              {/* Letter content */}
+              <div className="mb-8">
+                <label className="font-handwritten text-lg text-muted-foreground">
+                  scrisoarea ta:
+                </label>
+                <Textarea
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  placeholder="Dragă [persoană],
 
-            {/* Media Uploads */}
-            <div className="space-y-4">
-              <p className="text-sm text-muted-foreground">
-                adaugă o imagine sau o înregistrare audio (opțional)
-              </p>
+Vreau să-ți mulțumesc pentru acel moment când...
 
-              <div className="flex flex-wrap gap-4">
-                {/* Image Upload */}
-                <div>
-                  <input
-                    type="file"
-                    ref={imageInputRef}
-                    onChange={handleImageUpload}
-                    accept="image/*"
-                    className="hidden"
-                  />
+Nu știu dacă ți-ai dat seama vreodată cât de mult a însemnat pentru mine..."
+                  className="font-handwritten text-xl bg-transparent border-0 focus-visible:ring-0 min-h-[250px] resize-none leading-8 placeholder:text-muted-foreground/40"
+                  style={{ 
+                    backgroundImage: 'repeating-linear-gradient(transparent, transparent 31px, hsl(var(--border)) 31px, hsl(var(--border)) 32px)',
+                    lineHeight: '32px',
+                    paddingTop: '0'
+                  }}
+                />
+              </div>
+
+              {/* Media attachments */}
+              <div className="space-y-4">
+                <p className="font-handwritten text-lg text-muted-foreground">
+                  atașează o amintire? ♡
+                </p>
+
+                <div className="flex flex-wrap gap-3">
+                  {/* Image Upload */}
+                  <div>
+                    <input
+                      type="file"
+                      ref={imageInputRef}
+                      onChange={handleImageUpload}
+                      accept="image/*"
+                      className="hidden"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => imageInputRef.current?.click()}
+                      className="gap-2 font-handwritten text-lg"
+                    >
+                      <Image className="w-4 h-4" />
+                      {image ? "altă poză" : "o poză"}
+                    </Button>
+                  </div>
+
+                  {/* Audio Upload */}
+                  <div>
+                    <input
+                      type="file"
+                      ref={audioInputRef}
+                      onChange={handleAudioUpload}
+                      accept="audio/*"
+                      className="hidden"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => audioInputRef.current?.click()}
+                      className="gap-2 font-handwritten text-lg"
+                    >
+                      <FileAudio className="w-4 h-4" />
+                      {audio ? "alt fișier" : "un audio"}
+                    </Button>
+                  </div>
+
+                  {/* Record Audio */}
                   <Button
                     type="button"
                     variant="outline"
-                    onClick={() => imageInputRef.current?.click()}
-                    className="gap-2"
+                    size="sm"
+                    onClick={isRecording ? stopRecording : startRecording}
+                    className={`gap-2 font-handwritten text-lg ${isRecording ? "text-primary border-primary animate-pulse" : ""}`}
                   >
-                    <Image className="w-4 h-4" />
-                    {image ? "Schimbă imaginea" : "Adaugă imagine"}
+                    {isRecording ? (
+                      <>
+                        <MicOff className="w-4 h-4" />
+                        oprește
+                      </>
+                    ) : (
+                      <>
+                        <Mic className="w-4 h-4" />
+                        înregistrează
+                      </>
+                    )}
                   </Button>
                 </div>
 
-                {/* Audio Upload */}
-                <div>
-                  <input
-                    type="file"
-                    ref={audioInputRef}
-                    onChange={handleAudioUpload}
-                    accept="audio/*"
-                    className="hidden"
-                  />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => audioInputRef.current?.click()}
-                    className="gap-2"
-                  >
-                    <FileAudio className="w-4 h-4" />
-                    {audio ? "Schimbă audio" : "Încarcă audio"}
-                  </Button>
-                </div>
+                {/* Preview uploaded media */}
+                {(image || audio) && (
+                  <div className="flex flex-wrap gap-4 pt-4">
+                    {image && (
+                      <div className="relative bg-white p-2 shadow-md rotate-2">
+                        <img
+                          src={image}
+                          alt="Preview"
+                          className="h-24 w-24 object-cover sepia-[0.2]"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setImage(null)}
+                          className="absolute -top-2 -right-2 w-6 h-6 bg-primary text-primary-foreground flex items-center justify-center shadow-sm"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </div>
+                    )}
+                    {audio && (
+                      <div className="relative bg-secondary p-4 flex items-center gap-3">
+                        <FileAudio className="w-6 h-6 text-primary" />
+                        <span className="font-handwritten text-lg text-muted-foreground">
+                          mesaj audio ♪
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => setAudio(null)}
+                          className="w-6 h-6 bg-primary text-primary-foreground flex items-center justify-center"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
 
-                {/* Record Audio */}
+              {/* Submit - stamp style */}
+              <div className="mt-10 flex justify-end">
                 <Button
-                  type="button"
-                  variant="outline"
-                  onClick={isRecording ? stopRecording : startRecording}
-                  className={`gap-2 ${isRecording ? "text-primary border-primary" : ""}`}
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-handwritten text-xl px-8 py-6 animate-gentle-pulse"
                 >
-                  {isRecording ? (
-                    <>
-                      <MicOff className="w-4 h-4" />
-                      Oprește înregistrarea
-                    </>
+                  {isSubmitting ? (
+                    "se trimite..."
                   ) : (
                     <>
-                      <Mic className="w-4 h-4" />
-                      Înregistrează
+                      <Send className="w-5 h-5" />
+                      trimite scrisoarea
                     </>
                   )}
                 </Button>
               </div>
-
-              {/* Preview uploaded media */}
-              {(image || audio) && (
-                <div className="flex flex-wrap gap-4 pt-4">
-                  {image && (
-                    <div className="relative">
-                      <img
-                        src={image}
-                        alt="Preview"
-                        className="h-20 w-20 object-cover"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setImage(null)}
-                        className="absolute -top-2 -right-2 w-6 h-6 bg-destructive text-destructive-foreground flex items-center justify-center"
-                      >
-                        <X className="w-3 h-3" />
-                      </button>
-                    </div>
-                  )}
-                  {audio && (
-                    <div className="relative bg-secondary p-3 flex items-center gap-2">
-                      <FileAudio className="w-5 h-5 text-primary" />
-                      <span className="text-sm text-muted-foreground">
-                        Înregistrare audio
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => setAudio(null)}
-                        className="ml-2 w-6 h-6 bg-destructive text-destructive-foreground flex items-center justify-center"
-                      >
-                        <X className="w-3 h-3" />
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* Submit */}
-            <div className="pt-4">
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full md:w-auto gap-2 bg-primary hover:bg-primary/90 text-primary-foreground"
-              >
-                {isSubmitting ? (
-                  "Se trimite..."
-                ) : (
-                  <>
-                    <Send className="w-4 h-4" />
-                    Trimite scrisoarea
-                  </>
-                )}
-              </Button>
             </div>
           </form>
         </div>
