@@ -65,10 +65,10 @@ const HeroSection = ({ heroImage }: HeroSectionProps) => {
             {/* Main photo with nostalgic effect */}
             <div className="relative max-w-md mx-auto">
               {/* Tape decoration */}
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-20 h-8 bg-amber-100/90 rotate-[-2deg] shadow-sm z-10" />
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-20 h-8 bg-accent/90 rotate-[-2deg] shadow-sm z-10" />
               
               {/* Photo frame */}
-              <div className="relative bg-white p-3 shadow-xl rotate-2 hover:rotate-0 transition-transform duration-500">
+              <div className="relative bg-background p-3 shadow-xl rotate-2 hover:rotate-0 transition-transform duration-500">
                 <img
                   src={heroImage}
                   alt="Un adolescent cu privirea spre viitor"
