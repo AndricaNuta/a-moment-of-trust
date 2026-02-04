@@ -2,95 +2,82 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/* Ideo Ideis Design System
+   Brand Colors: Red #E7004C, Dark Greys #222324 #2c2d34
+   Typography: Sharp, lowercase headlines, left-aligned
+   Style: Minimalist, geometric, emotional, youth-focused
 */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Ideo Ideis Brand Colors */
+    --background: 220 10% 14%; /* #222324 dark charcoal */
+    --foreground: 40 20% 95%; /* warm off-white */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 220 8% 18%; /* #2c2d34 slightly lighter dark */
+    --card-foreground: 40 20% 95%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 220 8% 18%;
+    --popover-foreground: 40 20% 95%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Ideo Red - Primary brand color */
+    --primary: 343 100% 45%; /* #E7004C */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 220 8% 22%;
+    --secondary-foreground: 40 20% 90%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 220 8% 25%;
+    --muted-foreground: 220 10% 60%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 343 100% 45%; /* same as primary for consistency */
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 220 8% 25%;
+    --input: 220 8% 22%;
+    --ring: 343 100% 45%;
 
-    --radius: 0.5rem;
+    --radius: 0px; /* Sharp corners - brand requirement */
 
-    --sidebar-background: 0 0% 98%;
+    /* Ideo Pillar Colors for accents */
+    --ideo-red: 343 100% 45%;
+    --ideo-teal: 178 100% 29%;
+    --ideo-blue: 220 100% 32%;
+    --ideo-purple: 265 36% 37%;
+    --ideo-pink: 316 97% 46%;
+    --ideo-cyan: 203 100% 39%;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 220 10% 14%;
+    --sidebar-foreground: 40 20% 95%;
+    --sidebar-primary: 343 100% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 8% 22%;
+    --sidebar-accent-foreground: 40 20% 95%;
+    --sidebar-border: 220 8% 25%;
+    --sidebar-ring: 343 100% 45%;
   }
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+  /* Light mode - using dark as default for Ideo brand */
+  .light {
+    --background: 40 20% 98%;
+    --foreground: 220 10% 14%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 10% 14%;
+    --primary: 343 100% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 8% 94%;
+    --secondary-foreground: 220 10% 14%;
+    --muted: 220 8% 92%;
+    --muted-foreground: 220 8% 40%;
+    --accent: 343 100% 45%;
+    --accent-foreground: 0 0% 100%;
+    --border: 220 8% 88%;
+    --input: 220 8% 88%;
   }
 }
 
@@ -100,6 +87,41 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  /* Ideo Typography - lowercase, bold, clear */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+    text-transform: lowercase;
+  }
+
+  /* Geometric accent elements */
+  .ideo-accent-line {
+    @apply h-1 bg-primary;
+  }
+
+  .ideo-accent-bar {
+    @apply w-1 bg-primary;
+  }
+}
+
+@layer utilities {
+  /* Ideo geometric decorations */
+  .ideo-geometric-dots::before {
+    content: '■ ■ ■';
+    @apply text-primary text-xs tracking-widest;
+  }
+
+  /* Letter spacing for headlines */
+  .ideo-headline {
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  /* Smooth scroll */
+  .scroll-smooth {
+    scroll-behavior: smooth;
   }
 }
