@@ -110,7 +110,7 @@ const DonationCTA = () => {
                 asChild
                 size="lg"
                 variant="outline"
-                className="border-white text-white hover:bg-white/10 font-handwritten text-xl gap-2"
+                className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10 font-handwritten text-xl gap-2"
               >
                 <a
                   href="https://ideoideis.ro/implica-te/"
