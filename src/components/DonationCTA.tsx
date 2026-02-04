@@ -3,39 +3,7 @@ import { Button } from "@/components/ui/button";
 
 const DonationCTA = () => {
   return (
-    <>
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-t border-border">
-        <div className="container mx-auto px-4 py-3">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p className="text-foreground text-center sm:text-left text-sm">
-              ajută un adolescent să aibă parte de{" "}
-              <span className="text-primary font-medium">cineva care crede în el</span>
-            </p>
-            <div className="flex gap-2">
-              <Button asChild size="sm" variant="outline">
-                <a
-                  href="https://ideoideis.ro/implica-te/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  3,5%
-                </a>
-              </Button>
-              <Button asChild size="sm" className="bg-primary hover:bg-primary/90">
-                <a
-                  href="https://ideoideis.ro/implica-te/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  donează
-                </a>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <section id="donate" className="py-14 lg:py-16 bg-primary text-primary-foreground mb-20 relative overflow-hidden">
+    <section id="donate" className="py-14 lg:py-16 bg-primary text-primary-foreground relative overflow-hidden">
         <div className="container mx-auto px-6 lg:px-12 relative">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-2xl md:text-3xl font-semibold mb-3">fii acea persoană care crede</h2>
@@ -93,7 +61,6 @@ const DonationCTA = () => {
           </div>
         </div>
       </section>
-    </>
   );
 };
 
