@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* Ideo Ideis – brand-aligned but warm & friendly
-   Typography: DM Sans (Söhne fallback). Colours: #e70a4c, dark grays. Soft geometry, warm neutrals.
+   Typography: DM Sans (Söhne fallback). Colours: #E7004C, dark grays. Soft geometry, warm neutrals.
 */
 
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
@@ -20,7 +20,7 @@
     --popover: 40 25% 99%;
     --popover-foreground: 230 12% 20%;
 
-    --primary: 342 92% 47%;
+    --primary: 343 100% 45%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 40 20% 94%;
@@ -37,12 +37,12 @@
 
     --border: 40 15% 88%;
     --input: 40 18% 92%;
-    --ring: 342 92% 47%;
+    --ring: 343 100% 45%;
 
     /* Soft, friendly corners */
     --radius: 0.625rem; /* 10px */
 
-    --ideo-red: 342 92% 47%;
+    --ideo-red: 343 100% 45%;
     --ideo-teal: 178 100% 29%;
     --ideo-blue: 220 100% 32%;
     --ideo-purple: 265 36% 37%;
@@ -51,12 +51,12 @@
 
     --sidebar-background: 40 25% 98%;
     --sidebar-foreground: 230 12% 20%;
-    --sidebar-primary: 342 92% 47%;
+    --sidebar-primary: 343 100% 45%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 40 20% 94%;
     --sidebar-accent-foreground: 230 12% 22%;
     --sidebar-border: 40 15% 88%;
-    --sidebar-ring: 342 92% 47%;
+    --sidebar-ring: 343 100% 45%;
   }
 }
 
@@ -75,12 +75,6 @@
     font-family: 'DM Sans', system-ui, sans-serif;
     font-weight: 600;
     line-height: 1.25;
-  }
-
-  /* Responsive images – prevent overflow on small screens */
-  img {
-    max-width: 100%;
-    height: auto;
   }
 }
 

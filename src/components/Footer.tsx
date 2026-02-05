@@ -1,7 +1,7 @@
 const Footer = () => {
   return (
-    <footer className="py-10 sm:py-12 bg-card border-t border-border mb-16 sm:mb-20 md:mb-24">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12">
+    <footer className="py-12 bg-card border-t border-border mb-20 md:mb-24">
+      <div className="container mx-auto px-6 lg:px-12">
         <div className="flex flex-col items-center gap-6 text-center">
           <div className="flex items-center gap-2">
             <span className="text-xl font-semibold text-foreground">ideo ideis</span>

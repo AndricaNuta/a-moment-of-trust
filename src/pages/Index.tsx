@@ -6,11 +6,14 @@ import LetterForm from "@/components/LetterForm";
 import LettersWall from "@/components/LettersWall";
 import DonationCTA from "@/components/DonationCTA";
 
-// Import images
-import heroImage from "@/assets/hero-teen-1.jpg";
-import galleryImage1 from "@/assets/gallery-trust-1.jpg";
-import galleryImage2 from "@/assets/gallery-trust-2.jpg";
-import galleryImage3 from "@/assets/gallery-trust-3.jpg";
+// Import all images from assets (Vite glob – no one-by-one imports)
+const imageModules = import.meta.glob<{ default: string }>(
+  "/src/assets/*.{jpg,jpeg,png,gif,webp}",
+  { eager: true }
+);
+const imageEntries = Object.entries(imageModules) as [string, { default: string }][];
+const allImageUrls = imageEntries.map(([, mod]) => mod.default);
+const heroImageUrl = imageEntries.find(([path]) => path.includes("hero"))?.[1].default ?? allImageUrls[0];
 
 interface Letter {
   id: string;
@@ -60,7 +63,7 @@ Acum sunt scriitor.`,
 const Index = () => {
   const [letters, setLetters] = useState<Letter[]>(sampleLetters);
 
-  const galleryImages = [galleryImage1, galleryImage2, galleryImage3];
+  const galleryImages = allImageUrls;
 
   const handleLetterSubmit = (letterData: Omit<Letter, "id" | "createdAt">) => {
     const newLetter: Letter = {
@@ -72,8 +75,8 @@ const Index = () => {
   };
 
   return (
-    <main className="min-h-screen scroll-smooth overflow-x-hidden">
-      <HeroSection heroImage={heroImage} />
+    <main className="min-h-screen scroll-smooth">
+      <HeroSection heroImage={heroImageUrl} />
       <StorySection />
       <GallerySection images={galleryImages} />
       <LetterForm onSubmit={handleLetterSubmit} />
