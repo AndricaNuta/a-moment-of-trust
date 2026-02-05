@@ -197,10 +197,21 @@ main.sphere-main {
   height: 100%;
   object-fit: cover;
   filter: var(--image-filter, none);
+  border-radius: var(--enlarge-radius, 32px);
+}
+
+/* Opened/focused image: full color and prominent */
+.sphere-root[data-enlarging='true'] .viewer .enlarge img {
+  filter: none;
+}
+
+.sphere-root .enlarge-closing {
+  border-radius: var(--enlarge-radius, 32px);
 }
 
 .sphere-root .enlarge-closing img {
   filter: var(--image-filter, none);
+  border-radius: inherit;
 }
 
 .edge-fade {
