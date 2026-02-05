@@ -23,8 +23,8 @@ const HeroSection = ({ heroImage }: HeroSectionProps) => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-8 sm:py-12 lg:py-16 relative">
         <div className="grid lg:grid-cols-2 gap-6 sm:gap-10 lg:gap-16 items-center">
           <div className="order-2 lg:order-1 text-left">
-            <p className="text-sm text-muted-foreground tracking-wide mb-3">
-              o invitație să-ți amintești
+            <p className="text-xs text-muted-foreground tracking-[0.2em] uppercase mb-2 font-medium">
+              ideo ideis · o invitație să-ți amintești
             </p>
 
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.75rem] font-semibold text-foreground leading-[1.2] mb-4">
@@ -32,7 +32,7 @@ const HeroSection = ({ heroImage }: HeroSectionProps) => {
             </h1>
 
             <p className="text-muted-foreground max-w-lg leading-relaxed mb-6 text-sm sm:text-base">
-              scrie-i o scrisoare — câteva cuvinte din inimă. apoi citește pe ale altora sau ajuță un adolescent să aibă pe cineva care crede în el.
+              scrie-i o scrisoare — câteva cuvinte din inimă. apoi citește pe ale altora sau ajută un adolescent să aibă pe cineva care crede în el.
             </p>
 
             <button

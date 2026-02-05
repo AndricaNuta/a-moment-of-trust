@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Mic, MicOff, Send, X, Image, FileAudio, Sparkles, Play, Pause } from "lucide-react";
+import { Mic, MicOff, Send, X, Image, FileAudio, Play, Pause } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -186,8 +186,8 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
       <div className="container mx-auto px-6 lg:px-12">
         <div className="max-w-2xl mx-auto">
           <div className="text-left mb-8">
-            <Sparkles className="w-6 h-6 text-primary mb-2" />
-            <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-2">
+            <span className="text-[11px] font-semibold tracking-wider text-primary uppercase">ideo ideis</span>
+            <h2 className="text-2xl md:text-3xl font-semibold text-foreground mt-2 mb-2">
               scrie o scrisoare
             </h2>
             <p className="text-muted-foreground text-sm leading-relaxed">
@@ -196,7 +196,7 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
           </div>
 
           <form onSubmit={handleSubmit} className="relative">
-            <div className="bg-background border border-border rounded-xl p-6 md:p-8 shadow-sm">
+            <div className="note-paper paper-grain relative rounded-xl p-6 md:p-8 border border-amber-200/50">
               <div className="mb-6">
                 <label className="block text-sm font-medium text-muted-foreground mb-2">
                   de la:
