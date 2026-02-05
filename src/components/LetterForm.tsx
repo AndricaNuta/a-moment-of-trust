@@ -191,7 +191,7 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
               scrie o scrisoare
             </h2>
             <p className="text-muted-foreground text-sm leading-relaxed">
-              câteva cuvinte din inimă — nu trebuie perfect. poate nu ajunge la ea, dar tu știi că ai spus-o.
+              Câteva rânduri către tine, cel de la 16 ani, despre cine a avut încredere în tine atunci și ce a însemnat acel moment.
             </p>
           </div>
 
@@ -205,7 +205,7 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
                   type="text"
                   value={author}
                   onChange={(e) => setAuthor(e.target.value)}
-                  placeholder="numele tău (sau lasă gol)"
+                  placeholder="numele tău [sau lasă gol]"
                   className="border-border"
                 />
               </div>
@@ -217,7 +217,7 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
                 <Textarea
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
-                  placeholder={"Dragă [persoană],\n\nVreau să-ți mulțumesc pentru acel moment când...\n\nNu știu dacă ți-ai dat seama vreodată cât de mult a însemnat pentru mine."}
+                  placeholder={"Dragă [numele tău] de la 16 ani,\n\nAstăzi mi-am amintit de momentul în care cineva a avut încredere în tine...\n\nPoate nu știai atunci cât de mult avea să conteze, dar... "}
                   className="border-border min-h-[200px] resize-none leading-relaxed"
                 />
               </div>

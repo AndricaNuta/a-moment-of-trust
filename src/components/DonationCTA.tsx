@@ -1,4 +1,3 @@
-import { ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const DonationCTA = () => {
@@ -6,15 +5,19 @@ const DonationCTA = () => {
     <section id="donate" className="py-14 lg:py-16 bg-primary text-primary-foreground relative overflow-hidden">
         <div className="container mx-auto px-6 lg:px-12 relative">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-2xl md:text-3xl font-semibold mb-3">fii acea persoană care crede</h2>
+            <h2 className="text-2xl md:text-3xl font-semibold mb-3">
+              cineva a avut încredere în tine la 16 ani.
+              <br />
+              acum e rândul tău.
+            </h2>
             <p className="text-primary-foreground/90 text-sm max-w-lg mx-auto mb-6">
-              donație sau 3,5% din impozit → adolescenți care au pe cineva care crede în ei (tabere, festivaluri, artă).
+              prin donație directă sau redirecționarea a 3,5% din impozit, ajuți un adolescent să întâlnească acel „cineva” la momentul potrivit.
             </p>
 
             <div className="grid grid-cols-3 gap-4 mb-8 max-w-sm mx-auto">
               {[
-                { number: "18", label: "ani" },
-                { number: "3000+", label: "adolescenți" },
+                { number: "21", label: "ani" },
+                { number: "6000+", label: "adolescenți" },
                 { number: "∞", label: "povești" },
               ].map((stat, index) => (
                 <div key={index} className="text-center">
@@ -32,8 +35,7 @@ const DonationCTA = () => {
               >
                 <a
                   href="https://ideoideis.ro/implica-te/"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target="_top"
                 >
                   donează
                 </a>
@@ -46,10 +48,8 @@ const DonationCTA = () => {
               >
                 <a
                   href="https://ideoideis.ro/implica-te/"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target="_top"
                 >
-                  <ExternalLink className="w-4 h-4" />
                   3,5%
                 </a>
               </Button>

@@ -2,10 +2,10 @@ import { Sparkles, PenLine, Share2, Heart } from "lucide-react";
 
 const StorySection = () => {
   const steps = [
-    { icon: Sparkles, title: "amintește-ți", description: "cine a fost acolo pentru tine?" },
-    { icon: PenLine, title: "scrie-i", description: "câteva cuvinte — tot ce vrei să spui" },
-    { icon: Share2, title: "împarte", description: "scrisoarea ta inspiră și pe alții" },
-    { icon: Heart, title: "fii acea persoană", description: "donație → adolescenți care au pe cineva care crede în ei" }
+    { icon: Sparkles, title: "amintește-ți", description: "cine a avut încredere în tine când aveai 16 ani?" },
+    { icon: PenLine, title: "scrie-i", description: "o scrisoare versiunii tale de atunci — câteva rânduri din inimă" },
+    { icon: Share2, title: "distribuie", description: "povestea ta îi poate inspira și pe alții să își amintească" },
+    { icon: Heart, title: "fii acea persoană", description: "printr-o donație sau redirecționarea a 3,5% din impozit, ajuți un alt adolescent să ajungă la Ideo Ideis" }
   ];
 
   return (
@@ -18,7 +18,7 @@ const StorySection = () => {
               toți am avut pe cineva
             </h2>
             <p className="text-muted-foreground max-w-xl leading-relaxed">
-              un cuvânt, un gest — și totul s-a schimbat. scrii o scrisoare, o împarți, sau ajuți prin donație.
+              Scrie o scrisoare versiunii tale de la 16 ani și amintește-ți cine a avut încredere în tine atunci. Povestea ta îi poate inspira pe alții, iar printr-o donație poți face ca și alți adolescenți să aibă, la rândul lor, pe cineva care are încredere în ei.
             </p>
           </div>
 
@@ -40,11 +40,6 @@ const StorySection = () => {
             ))}
           </div>
 
-          <div className="mt-8 text-left">
-            <p className="text-foreground font-medium">
-              fiecare adolescent merită pe cineva care să spună: eu cred în tine.
-            </p>
-          </div>
         </div>
       </div>
     </section>

@@ -13,10 +13,14 @@ const captions = [
 ];
 
 const GallerySection = ({ images }: GallerySectionProps) => {
-  const galleryImages = images.map((src, i) => ({
-    src,
-    alt: captions[i] ?? `Imagine ${i + 1}`,
-  }));
+  const galleryImages = useMemo(
+    () =>
+      images.map((src, i) => ({
+        src,
+        alt: captions[i] ?? `Imagine ${i + 1}`,
+      })),
+    [images]
+  );
 
   const stackCards = useMemo(
     () =>
@@ -67,7 +71,7 @@ const GallerySection = ({ images }: GallerySectionProps) => {
             overlayBlurColor="hsl(var(--background))"
           />
         </div>
-
+{/*
         <div className="mt-8 flex justify-center overflow-visible">
           <div className="w-[208px] h-[208px] overflow-visible">
             <Stack
@@ -89,7 +93,7 @@ const GallerySection = ({ images }: GallerySectionProps) => {
             />
           </div>
         </div>
-
+*/}
         <p className="mt-6 sm:mt-8 text-center text-muted-foreground text-sm">
           iar tu?{" "}
           <a href="#write" className="text-primary font-medium hover:underline">

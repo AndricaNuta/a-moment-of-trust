@@ -5,8 +5,11 @@ interface HeroSectionProps {
 }
 
 const HeroSection = ({ heroImage }: HeroSectionProps) => {
-  const scrollToContent = () => {
+  const scrollToStory = () => {
     document.getElementById("story")?.scrollIntoView({ behavior: "smooth" });
+  };
+  const scrollToWrite = () => {
+    document.getElementById("write")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -27,16 +30,20 @@ const HeroSection = ({ heroImage }: HeroSectionProps) => {
               ideo ideis · o invitație să-ți amintești
             </p>
 
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.75rem] font-semibold text-foreground leading-[1.2] mb-4">
-              cine a crezut în tine când aveai 16 ani?
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.75rem] font-semibold text-foreground leading-[1.2] mb-3">
+              Cineva a avut încredere în mine la 16 ani.
             </h1>
 
+            <p className="text-lg text-foreground/90 font-medium leading-snug mb-4">
+              Astăzi poți fi tu acel „cineva” pentru un alt adolescent.
+            </p>
+
             <p className="text-muted-foreground max-w-lg leading-relaxed mb-6 text-sm sm:text-base">
-              scrie-i o scrisoare — câteva cuvinte din inimă. apoi citește pe ale altora sau ajută un adolescent să aibă pe cineva care crede în el.
+              Întoarce-te pentru câteva minute la tine, cel de la 16 ani. Scrie-i o scrisoare și amintește-ți cine ți-a spus prima dată „cred în tine”. Apoi ajută-ne să oferim mai departe acea încredere.
             </p>
 
             <button
-              onClick={scrollToContent}
+              onClick={scrollToWrite}
               className="group inline-flex items-center gap-2 bg-primary text-primary-foreground font-medium px-5 py-2.5 rounded-lg shadow-sm hover:bg-primary/90 hover:shadow transition-all duration-200"
             >
               <span>scrie o scrisoare</span>
@@ -58,10 +65,15 @@ const HeroSection = ({ heroImage }: HeroSectionProps) => {
         </div>
       </div>
 
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-muted-foreground">
-        <span className="text-xs tracking-widest uppercase">scroll</span>
+      <button
+        type="button"
+        onClick={scrollToStory}
+        className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+        aria-label="Descoperă cum funcționează"
+      >
+        <span className="text-xs tracking-widest uppercase">descoperă</span>
         <ChevronDown className="w-3.5 h-3.5 animate-bounce" />
-      </div>
+      </button>
     </section>
   );
 };

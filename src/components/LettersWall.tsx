@@ -132,7 +132,7 @@ const LettersWall = ({ letters }: LettersWallProps) => {
             <div className="note-paper rounded-lg border border-amber-200/60 p-6 text-left">
               <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1.5 mb-4">
                 <span className="text-[11px] font-semibold tracking-wider text-primary uppercase">
-                  ideo ideis
+                  IDEO IDEIS · peretele amintirilor
                 </span>
               </div>
               <h2 className="text-xl font-semibold text-foreground mb-2">
@@ -154,14 +154,12 @@ const LettersWall = ({ letters }: LettersWallProps) => {
         <div className="text-left mb-10">
           <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1.5 mb-3">
             <span className="text-[11px] font-semibold tracking-wider text-primary uppercase">
-              ideo ideis
+              IDEO IDEIS · peretele amintirilor
             </span>
-            <span className="text-muted-foreground/70">·</span>
-            <span className="text-xs text-muted-foreground font-medium">peretele amintirilor</span>
           </div>
-          <h2 className="text-2xl md:text-3xl font-semibold mt-2 mb-2">scrisori din inimă</h2>
+          <h2 className="text-2xl md:text-3xl font-semibold mt-2 mb-2">poveștile noastre</h2>
           <p className="text-muted-foreground text-sm max-w-lg">
-            povești despre încredere. un singur om poate schimba totul.
+            scrisori către noi, cei de la 16 ani, și către oamenii care au avut atunci încredere în noi
           </p>
         </div>
 

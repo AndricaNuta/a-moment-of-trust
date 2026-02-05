@@ -210,6 +210,7 @@ export default function DomeGallery({
   }, [applyTransform]);
 
   const lockedRadiusRef = useRef<number | null>(null);
+  const lastSizeRef = useRef<{ w: number; h: number }>({ w: 0, h: 0 });
 
   useEffect(() => {
     const root = rootRef.current;
@@ -218,6 +219,10 @@ export default function DomeGallery({
       const cr = entries[0].contentRect;
       const w = Math.max(1, cr.width),
         h = Math.max(1, cr.height);
+      const prev = lastSizeRef.current;
+      if (prev.w === w && prev.h === h) return;
+      lastSizeRef.current = { w, h };
+
       const minDim = Math.min(w, h),
         maxDim = Math.max(w, h),
         aspect = w / h;

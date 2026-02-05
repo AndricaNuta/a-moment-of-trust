@@ -29,33 +29,30 @@ const sampleLetters: Letter[] = [
   {
     id: "1",
     author: "Maria",
-    content: `Dragă doamnă profesoară,
+    content: `Dragă eu, cea de la 16 ani,
+Poate nu știi încă, dar există oameni care văd mai mult în tine decât vezi tu acum. Îți amintești de profesoara care te-a încurajat să mergi la concursul de teatru, deși abia aveai curaj să vorbești în clasă? Atunci a fost momentul în care cineva a avut încredere în tine. Și, fără să îți dai seama, acel moment îți va schimba drumul.
 
-Nu știu dacă vă mai aduceți aminte de mine. Eram acel adolescent timid din clasa a X-a care nu vorbea niciodată. Dar dumneavoastră ați văzut ceva în mine — m-ați încurajat să particip la concursul de teatru.
-
-Atunci ați crezut în mine. Și asta mi-a schimbat viața.
-
-Mulțumesc.`,
+Ține minte: uneori e nevoie de un singur om care să creadă în tine.`,
     createdAt: new Date("2025-01-15"),
   },
   {
     id: "2",
     author: "Andrei",
-    content: `Tată,
+    content: `Dragă eu, cel de la 16 ani,
+Vor fi multe momente în care o să simți că nu ești suficient de bun. Dar o să fie și cineva care îți va spune, la momentul potrivit: „O să fie bine. Eu știu că poți."
+Pentru tine, acel om va fi tata. Iar cuvintele lui vor rămâne cu tine mult mai mult decât îți imaginezi acum.
 
-La 16 ani, când toată lumea spunea că nu o să reușesc nimic, tu ai fost singurul care mi-a spus: "O să fie bine. Eu știu că poți."
-
-Acele cuvinte încă mă ghidează și azi.`,
+Încrederea primită atunci o să te ducă mai departe decât crezi.`,
     createdAt: new Date("2025-01-28"),
   },
   {
     id: "3",
     author: "Anonim",
-    content: `Pentru doamna de la librărie,
+    content: `Dragă eu, cel de la 16 ani,
+Îți amintești momentul în care cineva ți-a dat prima carte „greu de citit" și a spus că știe că o vei înțelege? Nu era doar o carte, era încrederea pe care ți-a oferit-o.
+Poate nu ți-ai dat seama atunci, dar acel gest mic te-a făcut să crezi că poți mai mult.
 
-Probabil nu o să citiți niciodată asta, dar ați fost prima persoană care mi-a dat de citit o carte "de mari" când eram adolescent. Ați avut încredere că pot înțelege lucruri complicate.
-
-Acum sunt scriitor.`,
+Și, într-o zi, vei descoperi că exact de acolo a început totul.`,
     createdAt: new Date("2025-02-01"),
   },
 ];
