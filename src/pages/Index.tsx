@@ -144,7 +144,7 @@ const Index = () => {
   };
 
   return (
-    <main className="min-h-screen scroll-smooth">
+    <main className="min-h-screen scroll-smooth page-bottom-safe">
       <HeroSection heroImage={heroImageUrl} />
       <StorySection />
       <GallerySection images={galleryImages} />

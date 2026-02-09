@@ -134,11 +134,23 @@
     box-shadow: 0 2px 0 0 hsl(var(--primary) / 0.35);
   }
 
-  /* Modal scroll pe Safari iOS – scroll până la capăt + padding jos (share vizibil) */
+  /* Modal scroll pe Safari iOS – scroll până la capăt + padding jos (share vizibil), fără scrollbar vizibil */
   .letter-modal-scroll {
     -webkit-overflow-scrolling: touch;
     overflow-y: auto;
     overflow-x: hidden;
     padding-bottom: max(6rem, env(safe-area-inset-bottom));
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .letter-modal-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Pagina întreagă: padding jos doar pe mobil (< 640px), ca ultima secțiune să fie scrollabilă pe Safari */
+  @media (max-width: 639px) {
+    .page-bottom-safe {
+      padding-bottom: max(6rem, env(safe-area-inset-bottom));
+    }
   }
 }
