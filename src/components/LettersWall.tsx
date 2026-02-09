@@ -18,6 +18,9 @@ interface Letter {
 interface LettersWallProps {
   letters: Letter[];
   highlightLetterId?: string | null;
+  /** When set (e.g. from URL hash or parent postMessage), open the modal for this letter once. */
+  openLetterIdFromUrl?: string | null;
+  onOpenLetterFromUrlHandled?: () => void;
 }
 
 const ROTATIONS = [-0.5, 0.5, -0.3, 0.4, -0.4, 0.25]; // subtle note tilt
@@ -185,7 +188,12 @@ const LetterCard = ({
   );
 };
 
-const LettersWall = ({ letters, highlightLetterId = null }: LettersWallProps) => {
+const LettersWall = ({
+  letters,
+  highlightLetterId = null,
+  openLetterIdFromUrl = null,
+  onOpenLetterFromUrlHandled,
+}: LettersWallProps) => {
   const [detailLetter, setDetailLetter] = useState<LetterForModal | null>(null);
   const [detailOpen, setDetailOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -208,6 +216,21 @@ const LettersWall = ({ letters, highlightLetterId = null }: LettersWallProps) =>
   useEffect(() => {
     if (highlightLetterId) setCurrentPage(1);
   }, [highlightLetterId]);
+
+  // When opening from share link (URL hash or parent postMessage), open the modal for that letter
+  useEffect(() => {
+    if (!openLetterIdFromUrl || letters.length === 0) return;
+    const letter = letters.find((l) => l.id === openLetterIdFromUrl);
+    if (letter) {
+      setDetailLetter({
+        ...letter,
+        images: letter.images ?? [],
+      });
+      setDetailOpen(true);
+      setCurrentPage(Math.max(1, Math.ceil((letters.indexOf(letter) + 1) / LETTERS_PER_PAGE)));
+      onOpenLetterFromUrlHandled?.();
+    }
+  }, [openLetterIdFromUrl, letters, onOpenLetterFromUrlHandled]);
 
   const openDetail = (letter: Letter) => {
     setDetailLetter({

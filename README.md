@@ -82,6 +82,47 @@ Without `.env` configured, the app still runs: letters are kept in memory only a
 **Deploy pe GitHub Pages (workflow `.github/workflows/deploy-pages.yml`)**  
 Dacă aplicația e embedded pe alt domeniu (ex. ideoideis.ro), adaugă în **Settings → Secrets and variables → Actions** un secret numit `VITE_SHARE_BASE_URL` cu URL-ul paginii unde e embedded (ex. `https://ideoideis.ro/elementor-9069`). Astfel, linkurile de share (Facebook, WhatsApp, copiere) vor pointa către acel site, nu către github.io.
 
+**Link share în iframe (WordPress / Elementor)**  
+Când cineva deschide un link de tipul `https://ideoideis.ro/elementor-9069#letter-6aa6cc33-e838-4b4f-8cc0-0b7e4e41d25d`, hash-ul (`#letter-...`) este în URL-ul paginii părinte; iframe-ul nu îl vede automat. Pentru ca scrisoarea partajată să se deschidă în app, pe **pagina WordPress** trebuie adăugat un script care fie (A) pasează hash-ul în iframe, fie (B) trimite id-ul scrisorii prin postMessage.
+
+- **Varianta A – hash în src-ul iframe-ului**  
+  Pe pagina Elementor unde e embedded iframe-ul, adaugă un **HTML** sau **Code** widget cu:
+
+```html
+<script>
+(function() {
+  var hash = window.location.hash;
+  if (!hash || hash.indexOf('letter-') !== 0) return;
+  var iframe = document.querySelector('iframe[src*="a-moment-of-trust"], iframe[src*="moment-of-trust"]');
+  if (iframe && iframe.src) {
+    var url = iframe.src.split('#')[0];
+    iframe.src = url + hash;
+  }
+})();
+</script>
+```
+
+  (Ajustează selectorul `iframe` dacă iframe-ul tău are alt `src`; important: scriptul să ruleze după ce iframe-ul există în DOM.)
+
+- **Varianta B – postMessage**  
+  În același tip de widget, după ce iframe-ul s-a încărcat:
+
+```html
+<script>
+(function() {
+  var hash = window.location.hash;
+  var m = hash && hash.match(/#letter-([0-9a-fA-F-]{36})/);
+  if (!m) return;
+  var iframe = document.querySelector('iframe[src*="a-moment-of-trust"], iframe[src*="moment-of-trust"]');
+  if (iframe && iframe.contentWindow) {
+    iframe.contentWindow.postMessage({ type: 'OPEN_LETTER', letterId: m[1] }, '*');
+  }
+})();
+</script>
+```
+
+  Pentru varianta B, rulează scriptul după ce iframe-ul s-a încărcat (ex. la `window.load` sau cu `setTimeout(..., 500)`), ca aplicația din iframe să poată primi mesajul. Poți asculta și `hashchange` ca la schimbarea hash-ului în URL să se deschidă scrisoarea.
+
 ## How can I deploy this project?
 
 Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.

@@ -65,11 +65,38 @@ Poate nu ți-ai dat seama atunci, dar acel gest mic te-a făcut să crezi că po
   },
 ];
 
+const LETTER_HASH_REGEX = /^#letter-([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/;
+
 const Index = () => {
   const [letters, setLetters] = useState<Letter[]>(sampleLetters);
   const [highlightLetterId, setHighlightLetterId] = useState<string | null>(null);
+  const [openLetterIdFromUrl, setOpenLetterIdFromUrl] = useState<string | null>(null);
 
   const galleryImages = allImageUrls;
+
+  // Open shared letter when URL has #letter-<id> (e.g. when embedded in iframe and parent passes hash into iframe src)
+  useEffect(() => {
+    const hash = window.location.hash?.trim() || "";
+    const match = hash.match(LETTER_HASH_REGEX);
+    if (match) {
+      const id = match[1];
+      setHighlightLetterId(id);
+      setOpenLetterIdFromUrl(id);
+    }
+  }, []);
+
+  // When embedded in iframe, parent (WordPress) can send letter id via postMessage so we open that letter
+  useEffect(() => {
+    const handler = (event: MessageEvent) => {
+      const data = event.data;
+      if (data?.type === "OPEN_LETTER" && typeof data?.letterId === "string") {
+        setHighlightLetterId(data.letterId);
+        setOpenLetterIdFromUrl(data.letterId);
+      }
+    };
+    window.addEventListener("message", handler);
+    return () => window.removeEventListener("message", handler);
+  }, []);
 
   const loadLetters = useCallback(() => {
     fetchLetters().then((rows) => {
@@ -122,7 +149,12 @@ const Index = () => {
       <StorySection />
       <GallerySection images={galleryImages} />
       <LetterForm onSubmit={handleLetterSubmit} />
-      <LettersWall letters={letters} highlightLetterId={highlightLetterId} />
+      <LettersWall
+        letters={letters}
+        highlightLetterId={highlightLetterId}
+        openLetterIdFromUrl={openLetterIdFromUrl}
+        onOpenLetterFromUrlHandled={() => setOpenLetterIdFromUrl(null)}
+      />
       <DonationCTA />
     </main>
   );
