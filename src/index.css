@@ -147,9 +147,10 @@
     display: none;
   }
 
-  /* Pagina întreagă: padding jos doar pe mobil (< 640px), ca ultima secțiune să fie scrollabilă pe Safari */
+  /* Pagina întreagă pe mobil: padding sus + jos ca conținutul să nu fie înghesuit și scroll până la capăt pe Safari */
   @media (max-width: 639px) {
     .page-bottom-safe {
+      padding-top: max(1.5rem, env(safe-area-inset-top));
       padding-bottom: max(6rem, env(safe-area-inset-bottom));
     }
   }
