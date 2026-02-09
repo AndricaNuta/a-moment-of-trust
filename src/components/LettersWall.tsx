@@ -199,13 +199,6 @@ const LettersWall = ({ letters, highlightLetterId = null }: LettersWallProps) =>
     return letters.slice(start, start + LETTERS_PER_PAGE);
   }, [letters, currentPage]);
 
-  // Pad to LETTERS_PER_PAGE so the grid always shows 3 full rows (avoids "1 row" when few letters)
-  const displayItems = useMemo(() => {
-    const list = [...paginatedLetters];
-    while (list.length < LETTERS_PER_PAGE) list.push(null);
-    return list.slice(0, LETTERS_PER_PAGE);
-  }, [paginatedLetters]);
-
   useEffect(() => {
     if (currentPage > totalPages && totalPages >= 1) {
       setCurrentPage(totalPages);
@@ -260,24 +253,20 @@ const LettersWall = ({ letters, highlightLetterId = null }: LettersWallProps) =>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {displayItems.map((letter, index) =>
-            letter ? (
-              <LetterCard
-                key={letter.id}
-                letter={{ ...letter, images: letter.images ?? [] }}
-                index={(currentPage - 1) * LETTERS_PER_PAGE + index}
-                isHighlighted={letter.id === highlightLetterId}
-                onOpenDetail={() => openDetail(letter)}
-              />
-            ) : (
-              <div key={`empty-${index}`} className="min-h-[180px] opacity-0 pointer-events-none" aria-hidden />
-            )
-          )}
+          {paginatedLetters.map((letter, index) => (
+            <LetterCard
+              key={letter.id}
+              letter={{ ...letter, images: letter.images ?? [] }}
+              index={(currentPage - 1) * LETTERS_PER_PAGE + index}
+              isHighlighted={letter.id === highlightLetterId}
+              onOpenDetail={() => openDetail(letter)}
+            />
+          ))}
         </div>
 
         {totalPages > 1 && (
           <nav
-            className="mt-10 flex flex-wrap items-center justify-center gap-4"
+            className="mt-8 flex flex-wrap items-center justify-center gap-4"
             aria-label="Paginare scrisori"
           >
             <button
@@ -312,7 +301,7 @@ const LettersWall = ({ letters, highlightLetterId = null }: LettersWallProps) =>
           onOpenChange={setDetailOpen}
         />
 
-        <div className="mt-10 text-left flex flex-wrap items-center gap-3">
+        <div className="mt-6 lg:mt-8 text-left flex flex-wrap items-center gap-3">
           <p className="text-muted-foreground text-sm">
             și tu? <a href="#write" className="text-primary hover:underline font-medium">scrie aici ↑</a>
           </p>
