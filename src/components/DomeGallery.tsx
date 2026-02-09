@@ -212,6 +212,8 @@ export default function DomeGallery({
   const lockedRadiusRef = useRef<number | null>(null);
   const lastSizeRef = useRef<{ w: number; h: number }>({ w: 0, h: 0 });
 
+  const MIN_VALID_SIZE = 100; // Ignore ResizeObserver callbacks when off-screen (browser reports tiny/zero dims)
+
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
@@ -219,6 +221,8 @@ export default function DomeGallery({
       const cr = entries[0].contentRect;
       const w = Math.max(1, cr.width),
         h = Math.max(1, cr.height);
+      // When scrolled off-screen, browser may report 0 or tiny dims – skip layout to avoid "reload" on scroll back
+      if (w < MIN_VALID_SIZE || h < MIN_VALID_SIZE) return;
       const prev = lastSizeRef.current;
       if (prev.w === w && prev.h === h) return;
       lastSizeRef.current = { w, h };

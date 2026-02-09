@@ -69,6 +69,8 @@ const GallerySection = ({ images }: GallerySectionProps) => {
             dragDampening={2}
             grayscale
             overlayBlurColor="hsl(var(--background))"
+            openedImageWidth="min(75vw, 500px)"
+            openedImageHeight="min(60vh, 400px)"
           />
         </div>
 {/*

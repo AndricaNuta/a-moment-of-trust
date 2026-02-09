@@ -60,6 +60,25 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
+## Supabase setup (letter form)
+
+The letter form persists to [Supabase](https://supabase.com) (free tier).
+
+1. Create a project at [supabase.com](https://supabase.com) and get **Project URL** and **anon public** key from **Project Settings → API**.
+2. Copy `.env.example` to `.env` and set:
+   - `VITE_SUPABASE_URL` = your project URL  
+   - `VITE_SUPABASE_ANON_KEY` = your anon key
+3. In the Supabase **SQL Editor**, run the migrations in order:
+   - `supabase/migrations/001_letters.sql`
+   - `supabase/migrations/002_storage_letter_attachments.sql`
+   - `supabase/migrations/003_letter_image_urls.sql`
+4. **Storage** (for image/audio attachments):
+   - In Supabase go to **Storage** → **New bucket**.
+   - Name: `letter-attachments`, enable **Public bucket** (so the wall can show images/audio).
+   - After creating the bucket, go to **Policies** and add a policy so anonymous users can upload: **New policy** → “For full customization” → Policy name e.g. `Allow anon upload`, Operation **INSERT**, Target roles **anon**, WITH CHECK expression `true`. Add a SELECT policy with USING `true` if needed for public read.
+
+Without `.env` configured, the app still runs: letters are kept in memory only and new submissions appear on the wall until refresh.
+
 ## How can I deploy this project?
 
 Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
