@@ -79,6 +79,9 @@ The letter form persists to [Supabase](https://supabase.com) (free tier).
 
 Without `.env` configured, the app still runs: letters are kept in memory only and new submissions appear on the wall until refresh.
 
+**Deploy pe GitHub Pages (workflow `.github/workflows/deploy-pages.yml`)**  
+Dacă aplicația e embedded pe alt domeniu (ex. ideoideis.ro), adaugă în **Settings → Secrets and variables → Actions** un secret numit `VITE_SHARE_BASE_URL` cu URL-ul paginii unde e embedded (ex. `https://ideoideis.ro/elementor-9069`). Astfel, linkurile de share (Facebook, WhatsApp, copiere) vor pointa către acel site, nu către github.io.
+
 ## How can I deploy this project?
 
 Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.

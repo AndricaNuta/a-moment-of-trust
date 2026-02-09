@@ -83,13 +83,46 @@ export function LetterDetailModal({
   };
 
   const copyLink = async () => {
+    const doFallbackCopy = () => {
+      const textarea = document.createElement("textarea");
+      textarea.value = shareUrl;
+      textarea.style.position = "fixed";
+      textarea.style.left = "-9999px";
+      textarea.style.top = "0";
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      try {
+        const ok = document.execCommand("copy");
+        document.body.removeChild(textarea);
+        return ok;
+      } catch {
+        document.body.removeChild(textarea);
+        return false;
+      }
+    };
+
     try {
-      await navigator.clipboard.writeText(shareUrl);
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(shareUrl);
+      } else {
+        if (!doFallbackCopy()) throw new Error("Fallback failed");
+      }
       setLinkCopied(true);
       toast({ title: "Link copiat", description: "Linkul a fost copiat în clipboard." });
       setTimeout(() => setLinkCopied(false), 2000);
     } catch {
-      toast({ title: "Eroare", description: "Nu s-a putut copia linkul.", variant: "destructive" });
+      if (doFallbackCopy()) {
+        setLinkCopied(true);
+        toast({ title: "Link copiat", description: "Linkul a fost copiat în clipboard." });
+        setTimeout(() => setLinkCopied(false), 2000);
+      } else {
+        toast({
+          title: "Eroare",
+          description: "Nu s-a putut copia linkul. Copiază manual: " + shareUrl,
+          variant: "destructive",
+        });
+      }
     }
   };
 
