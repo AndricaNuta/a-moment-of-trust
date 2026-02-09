@@ -140,13 +140,13 @@ export function LetterDetailModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="fixed top-4 left-4 right-4 flex max-h-[calc(100dvh-2rem)] translate-y-0 translate-x-0 flex-col overflow-hidden p-4 sm:left-[50%] sm:right-auto sm:top-[50%] sm:max-w-2xl sm:translate-x-[-50%] sm:translate-y-[-50%] sm:max-h-[90dvh] [&>*]:min-w-0 max-w-lg sm:p-6">
+      <DialogContent className="fixed top-4 left-1/2 flex w-[calc(100%-2rem)] max-w-lg max-h-[calc(100dvh-2rem)] -translate-x-1/2 translate-y-0 flex-col overflow-hidden p-4 sm:top-[50%] sm:max-w-2xl sm:translate-y-[-50%] sm:max-h-[90dvh] [&>*]:min-w-0 sm:p-6">
         <DialogHeader className="flex-shrink-0">
           <DialogTitle className="sr-only">
             Scrisoare, de la {letter.author}
           </DialogTitle>
         </DialogHeader>
-        <div className="min-h-0 flex-1 space-y-6 overflow-x-hidden overflow-y-auto pt-2 min-w-0 pb-8">
+        <div className="letter-modal-scroll min-h-0 flex-1 space-y-6 pt-2 min-w-0">
           <div className="flex flex-wrap items-baseline justify-between gap-2 min-w-0">
             <p className="text-sm font-semibold text-foreground break-words min-w-0">
               {letter.author}

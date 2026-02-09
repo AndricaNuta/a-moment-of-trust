@@ -133,4 +133,12 @@
   .brand-underline {
     box-shadow: 0 2px 0 0 hsl(var(--primary) / 0.35);
   }
+
+  /* Modal scroll pe Safari iOS – scroll până la capăt + padding jos (share vizibil) */
+  .letter-modal-scroll {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: max(6rem, env(safe-area-inset-bottom));
+  }
 }
