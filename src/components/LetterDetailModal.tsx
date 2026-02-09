@@ -47,7 +47,7 @@ function getShareUrl(letterId: string): string {
 }
 
 function getShareText(author: string): string {
-  return `Scrisoare de la ${author} · ${SITE_TITLE}`;
+  return `Ai primit o scrisoare în care ${author} vrea să îți mulțumească. Citește-o aici:`;
 }
 
 export function LetterDetailModal({
@@ -143,7 +143,7 @@ export function LetterDetailModal({
       <DialogContent className="max-w-lg max-h-[90vh] overflow-x-hidden overflow-y-auto sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle className="sr-only">
-            Scrisoare de la {letter.author}
+            Scrisoare, de la {letter.author}
           </DialogTitle>
         </DialogHeader>
         <div className="space-y-6 pt-2 min-w-0">

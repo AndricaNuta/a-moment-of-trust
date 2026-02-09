@@ -1,11 +1,12 @@
-<!-- Copiază tot acest bloc în widget-ul HTML din Elementor (acolo unde ai deja iframe-ul). -->
+<!-- Copiază tot acest bloc în widget-ul HTML din Elementor (acolo unde ai deja iframe-ul).
+     Containerul are înălțime fixă viewport și overflow hidden ca doar conținutul iframe-ului să aibă scroll pe mobile. -->
 
-<div style="position: relative; width: 100%; height: 100%; min-height: 100vh;">
+<div class="trust-embed-wrapper" style="position: relative; width: 100%; height: 100vh; height: 100dvh; min-height: 100vh; overflow: hidden; overflow: clip;">
   <iframe
     id="trust-embed-iframe"
     src="https://andricanuta.github.io/a-moment-of-trust/"
     class="trust-embed-iframe"
-    style="position: absolute; top: 0; left: 0; bottom:0; width: 100%; height: 100%; min-height: 100vh; border: none; display: block;"
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; display: block;"
     title="A Moment of Trust"
   ></iframe>
 </div>
@@ -39,5 +40,10 @@
 
   // La schimbarea hash-ului în URL (ex. user dă Back/Forward) actualizează iframe-ul
   window.addEventListener('hashchange', applyLetterHash);
+
+  // 3) Opțional – dacă pagina nu are header/footer și vrei un singur scroll (doar în iframe):
+  // decomentează liniile de mai jos ca să blochezi scroll-ul pe WordPress.
+  // var w = document.querySelector('.trust-embed-wrapper');
+  // if (w) { document.body.style.overflow = 'hidden'; document.documentElement.style.overflow = 'hidden'; }
 })();
 </script>

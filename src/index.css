@@ -65,6 +65,17 @@
     @apply border-border;
   }
 
+  /* În iframe: un singur context de scroll, fără propagare la parent (WordPress) pe mobile */
+  html {
+    overflow-x: hidden;
+  }
+
+  html,
+  body {
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'DM Sans', system-ui, sans-serif;

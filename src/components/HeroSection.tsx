@@ -13,7 +13,7 @@ const HeroSection = ({ heroImage }: HeroSectionProps) => {
   };
 
   return (
-    <section className="relative min-h-[70vh] sm:min-h-[80vh] lg:min-h-[85vh] flex items-center overflow-hidden bg-background">
+    <section className="relative min-h-[70vh] sm:min-h-[80vh] lg:min-h-[85vh] flex items-center overflow-hidden bg-background pb-20 md:pb-0">
       {/* Soft warm blob – one subtle shape for warmth */}
       <div
         className="absolute top-0 right-0 w-[80%] max-w-2xl h-[70%] rounded-full opacity-[0.07] pointer-events-none"
