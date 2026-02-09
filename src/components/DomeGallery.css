@@ -48,6 +48,22 @@ main.sphere-main {
   will-change: transform;
 }
 
+/* Solid plane at the center of the sphere (Z ≈ 0).
+   In a preserve-3d context children are z-sorted, so this plane
+   sits between front-facing tiles (Z = +radius) and back-facing
+   tiles (Z = -radius), physically blocking the back tiles.
+   Fixes Safari where backface-visibility:hidden is unreliable. */
+.sphere-back-blocker {
+  position: absolute;
+  inset: -9999px;
+  margin: auto;
+  width: 19998px;
+  height: 19998px;
+  background: var(--overlay-blur-color, #ffffff);
+  transform: translateZ(-1px);
+  pointer-events: none;
+}
+
 .overlay,
 .overlay--blur {
   position: absolute;

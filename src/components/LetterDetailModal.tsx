@@ -140,7 +140,7 @@ export function LetterDetailModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="fixed top-4 left-1/2 flex w-[calc(100%-2rem)] max-w-lg max-h-[calc(100dvh-2rem)] -translate-x-1/2 translate-y-0 flex-col overflow-hidden p-4 sm:top-[50%] sm:max-w-2xl sm:translate-y-[-50%] sm:max-h-[90dvh] [&>*]:min-w-0 sm:p-6">
+      <DialogContent className="fixed top-4 left-1/2 flex w-[calc(100%-2rem)] max-w-lg max-h-[calc(100dvh-2rem)] -translate-x-1/2 translate-y-0 flex-col overflow-hidden rounded-lg p-4 sm:top-[50%] sm:max-w-2xl sm:translate-y-[-50%] sm:max-h-[90dvh] [&>*]:min-w-0 sm:p-6">
         <DialogHeader className="flex-shrink-0">
           <DialogTitle className="sr-only">
             Scrisoare, de la {letter.author}

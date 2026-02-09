@@ -675,6 +675,8 @@ export default function DomeGallery({
       <main ref={mainRef} className="sphere-main">
         <div className="stage">
           <div ref={sphereRef} className="sphere">
+            {/* Solid plane at sphere center – blocks back-facing tiles on Safari where backface-visibility:hidden fails */}
+            <div className="sphere-back-blocker" aria-hidden="true" />
             {items.map((it, i) => (
               <div
                 key={`${it.x},${it.y},${i}`}
