@@ -34,7 +34,7 @@ const DonationCTA = () => {
                 className="bg-background text-primary hover:bg-background/90 font-semibold"
               >
                 <a
-                  href="https://ideoideis.ro/implica-te/"
+                  href="https://ideoideis.ro/doneaza/"
                   target="_top"
                 >
                   donează
@@ -47,7 +47,7 @@ const DonationCTA = () => {
                 className="border-2 border-primary-foreground bg-transparent text-primary-foreground hover:bg-primary-foreground/15"
               >
                 <a
-                  href="https://ideoideis.ro/implica-te/"
+                  href="https://ideoideis.ro/doneaza/"
                   target="_top"
                 >
                   3,5%
