@@ -11,7 +11,8 @@ interface Letter {
   author: string;
   content: string;
   images: string[];
-  audio?: string;
+  audios?: string[];
+  videos?: string[];
   createdAt: Date;
 }
 
@@ -23,29 +24,8 @@ interface LettersWallProps {
   onOpenLetterFromUrlHandled?: () => void;
 }
 
-const ROTATIONS = [-0.5, 0.5, -0.3, 0.4, -0.4, 0.25]; // subtle note tilt
-
-// Tape position/rotation variants – placed toward exterior (edge + slight overflow)
-const TAPE_CONFIGS: { position: string; rotate: number; size: string }[][] = [
-  [{ position: "top-0 right-0 -mr-2 -mt-0.5", rotate: 4, size: "w-12 h-4" }],
-  [{ position: "top-0 left-0 -ml-2 -mt-0.5", rotate: -5, size: "w-14 h-4" }],
-  [
-    { position: "top-0 right-0 -mr-2 -mt-0.5", rotate: 3, size: "w-10 h-4" },
-    { position: "bottom-0 left-0 -ml-2 -mb-0.5", rotate: -4, size: "w-12 h-4" },
-  ],
-  [{ position: "bottom-0 right-0 -mr-2 -mb-0.5", rotate: -3, size: "w-11 h-4" }],
-  [{ position: "top-0 left-0 -ml-2 -mt-0.5", rotate: 6, size: "w-13 h-4" }],
-  [
-    { position: "top-0 left-0 -ml-2 -mt-0.5", rotate: -2, size: "w-10 h-4" },
-    { position: "bottom-0 right-0 -mr-2 -mb-0.5", rotate: 5, size: "w-11 h-4" },
-  ],
-  [{ position: "bottom-0 left-0 -ml-2 -mb-0.5", rotate: 2, size: "w-12 h-4" }],
-  [{ position: "top-0 right-0 -mr-2 -mt-0.5", rotate: -4, size: "w-14 h-4" }],
-];
-
 const LetterCard = ({
   letter,
-  index = 0,
   isHighlighted = false,
   onOpenDetail,
 }: {
@@ -54,21 +34,27 @@ const LetterCard = ({
   isHighlighted?: boolean;
   onOpenDetail: () => void;
 }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const rotation = ROTATIONS[index % ROTATIONS.length];
-  const tapes = TAPE_CONFIGS[index % TAPE_CONFIGS.length];
-  const hasAttachments = letter.images.length > 0 || letter.audio;
+  const [playingAudioIndex, setPlayingAudioIndex] = useState<number | null>(null);
+  const audioRefs = useRef<(HTMLAudioElement | null)[]>([]);
+  const hasAttachments =
+    letter.images.length > 0 ||
+    (letter.audios?.length ?? 0) > 0 ||
+    (letter.videos?.length ?? 0) > 0;
 
-  const toggleAudio = (e: React.MouseEvent) => {
+  const toggleAudio = (e: React.MouseEvent, index: number) => {
     e.stopPropagation();
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
+    const el = audioRefs.current[index];
+    if (el) {
+      if (playingAudioIndex === index) {
+        el.pause();
+        setPlayingAudioIndex(null);
       } else {
-        audioRef.current.play();
+        audioRefs.current.forEach((a, i) => {
+          if (i !== index && a) a.pause();
+        });
+        el.play();
+        setPlayingAudioIndex(index);
       }
-      setIsPlaying(!isPlaying);
     }
   };
 
@@ -80,10 +66,17 @@ const LetterCard = ({
   };
 
   const PREVIEW_CHARS = 320;
-  const rawPreview =
-    letter.content.length > PREVIEW_CHARS
+  const hasText = letter.content.trim().length > 0;
+  const parts: string[] = [];
+  if ((letter.videos?.length ?? 0) > 0) parts.push("video");
+  if ((letter.audios?.length ?? 0) > 0) parts.push("audio");
+  if (letter.images.length > 0) parts.push("imagini");
+  const mediaLabel = parts.length > 0 ? "mesaj cu " + parts.join(", ") : "";
+  const rawPreview = hasText
+    ? letter.content.length > PREVIEW_CHARS
       ? letter.content.slice(0, PREVIEW_CHARS).trim() + "…"
-      : letter.content;
+      : letter.content
+    : mediaLabel;
   const previewText = rawPreview.replace(/\s+/g, " ").trim();
 
   return (
@@ -97,46 +90,37 @@ const LetterCard = ({
           onOpenDetail();
         }
       }}
-      className={`note-paper letter-fold rounded-xl transition-all duration-200 relative pl-5 cursor-pointer hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 ${isHighlighted ? "ring-2 ring-primary/60 ring-offset-2 ring-offset-background shadow-lg animate-in fade-in duration-500" : ""}`}
-      style={{ transform: `rotate(${rotation}deg)` }}
+      className={`note-paper letter-fold rounded transition-all duration-200 relative pl-5 cursor-pointer hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 ${isHighlighted ? "ring-2 ring-primary/60 ring-offset-2 ring-offset-background shadow-lg animate-in fade-in duration-500" : ""}`}
       aria-label={`Citește scrisoarea de la ${letter.author}`}
     >
-      {/* Tape strip(s) – no text, position/rotation vary by note */}
-      {tapes.map((tape, i) => (
-        <div
-          key={i}
-          className={`absolute ${tape.position} bg-primary/75 shadow-sm ${tape.size}`}
-          style={{ transform: `rotate(${tape.rotate}deg)` }}
-          aria-hidden
-        />
-      ))}
-
-      <div className="p-5 pt-6">
+      <div className="p-5 pt-6 pb-10">
         <div className="flex items-baseline justify-between gap-2 mb-3">
-          <p className="text-sm font-medium text-foreground/90">{letter.author}</p>
-          <span className="text-[11px] text-muted-foreground tabular-nums shrink-0">
+          <p className="text-body font-semibold text-foreground/90">{letter.author}</p>
+          <span className="text-detalii text-muted-foreground tabular-nums shrink-0">
             {formatDate(letter.createdAt)}
           </span>
         </div>
-        <p
-          className="text-foreground/85 text-[15px] leading-relaxed mb-4 font-[450] break-words min-h-[4.9rem] line-clamp-3"
-          style={{
-            display: "-webkit-box",
-            WebkitBoxOrient: "vertical",
-            WebkitLineClamp: 3,
-          } as React.CSSProperties}
-        >
-          {previewText}
-        </p>
+        {previewText && (
+          <p
+            className="text-body text-foreground/85 mb-4 break-words min-h-[4.9rem] line-clamp-3"
+            style={{
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: 3,
+            } as React.CSSProperties}
+          >
+            {previewText}
+          </p>
+        )}
 
         {hasAttachments && (
-          <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-border">
+          <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-border min-w-0">
             {letter.images.length > 0 && (
               <div className="flex gap-1.5">
                 {letter.images.slice(0, 3).map((src, i) => (
                   <div
                     key={i}
-                    className="rounded-lg overflow-hidden border border-border shadow-sm"
+                    className="rounded overflow-hidden border border-border shadow-sm"
                   >
                     <img
                       src={src}
@@ -146,42 +130,56 @@ const LetterCard = ({
                   </div>
                 ))}
                 {letter.images.length > 3 && (
-                  <span className="text-xs text-muted-foreground self-center">
+                  <span className="text-detalii text-muted-foreground self-center">
                     +{letter.images.length - 3}
                   </span>
                 )}
               </div>
             )}
-            {letter.audio && (
-              <button
-                type="button"
-                onClick={toggleAudio}
-                className="flex items-center gap-2 bg-background/50 border border-border rounded-lg px-3 py-2 hover:bg-primary/5 hover:border-primary/25 transition-colors text-foreground/80"
+            {(letter.videos ?? []).map((src, i) => (
+              <div
+                key={i}
+                className="rounded overflow-hidden border border-border shadow-sm w-28 aspect-video shrink-0 flex items-center justify-center bg-muted/50 relative [&_video]:object-cover"
+                onClick={(e) => e.stopPropagation()}
               >
-                {isPlaying ? (
+                <video
+                  src={src}
+                  controls
+                  playsInline
+                  preload="metadata"
+                  poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none'%3E%3Crect width='64' height='64' fill='%23333'/%3E%3Cpath d='M26 20v24l18-12-18-12z' fill='%23fff' fill-opacity='0.9'/%3E%3C/svg%3E"
+                  className="w-full h-full"
+                />
+              </div>
+            ))}
+            {(letter.audios ?? []).map((src, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={(e) => toggleAudio(e, i)}
+                className="flex items-center gap-2 bg-background/50 border border-border rounded px-3 py-2 hover:bg-primary/5 hover:border-primary/25 transition-colors text-foreground/80"
+              >
+                {playingAudioIndex === i ? (
                   <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse" />
                 ) : (
                   <Play className="w-4 h-4 text-primary" />
                 )}
-                <span className="text-xs font-medium text-muted-foreground">ascultă</span>
+                <span className="text-detalii font-semibold text-muted-foreground">
+                  {letter.audios!.length > 1 ? `ascultă ${i + 1}` : "ascultă"}
+                </span>
                 <audio
-                  ref={audioRef}
-                  src={letter.audio}
-                  onEnded={() => setIsPlaying(false)}
+                  ref={(el) => (audioRefs.current[i] = el)}
+                  src={src}
+                  onEnded={() => setPlayingAudioIndex(null)}
                 />
               </button>
-            )}
+            ))}
           </div>
         )}
 
-        <div className="mt-4 flex items-center justify-end gap-2">
-          <span className="text-[10px] text-primary font-medium flex items-center gap-1">
-            <Maximize2 className="w-3 h-3" />
-            citește
-          </span>
-          <span className="text-[10px] text-muted-foreground/50 tracking-wide">
-            ideo ideis
-          </span>
+        <div className="absolute bottom-4 right-5 flex items-center gap-1">
+          <Maximize2 className="w-3 h-3 text-primary" />
+          <span className="text-detalii text-primary font-semibold">citește</span>
         </div>
       </div>
     </article>
@@ -225,6 +223,8 @@ const LettersWall = ({
       setDetailLetter({
         ...letter,
         images: letter.images ?? [],
+        audios: letter.audios ?? [],
+        videos: letter.videos ?? [],
       });
       setDetailOpen(true);
       setCurrentPage(Math.max(1, Math.ceil((letters.indexOf(letter) + 1) / LETTERS_PER_PAGE)));
@@ -236,24 +236,26 @@ const LettersWall = ({
     setDetailLetter({
       ...letter,
       images: letter.images ?? [],
+      audios: letter.audios ?? [],
+      videos: letter.videos ?? [],
     });
     setDetailOpen(true);
   };
 
   if (letters.length === 0) {
     return (
-      <section id="letters" className="py-14 lg:py-16 bg-background">
+      <section id="letters" className="py-14 lg:py-16 bg-section-alt text-section-alt-foreground">
         <div className="container mx-auto px-6 lg:px-12">
-          <div className="max-w-xl mx-auto text-left">
-            <div className="note-paper letter-fold rounded-xl p-6 md:p-8 pl-7 text-left">
-              <span className="text-[11px] font-semibold tracking-wider text-primary uppercase">
+          <div className="max-w-xl text-left">
+            <div className="note-paper letter-fold rounded p-6 md:p-8 pl-7 text-left bg-card text-foreground">
+              <span className="text-detalii font-semibold tracking-wider text-primary">
                 ideo ideis · peretele amintirilor
               </span>
-              <h2 className="text-xl font-semibold text-foreground mt-3 mb-2">
+              <h2 className="text-titlu-capitol mt-3 mb-2">
                 încă nu a sosit nicio scrisoare
               </h2>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                fii primul care scrie. <a href="#write" className="text-primary font-medium hover:underline">scrie aici</a>
+              <p className="text-body text-muted-foreground">
+                fii primul care scrie. <a href="#write" className="text-primary font-semibold hover:underline">scrie aici</a>
               </p>
             </div>
           </div>
@@ -263,24 +265,28 @@ const LettersWall = ({
   }
 
   return (
-    <section id="letters" className="py-14 lg:py-16 bg-background relative">
+    <section id="letters" className="py-14 lg:py-16 bg-section-alt text-section-alt-foreground relative">
       <div className="container mx-auto px-6 lg:px-12 relative">
         <div className="text-left mb-10">
-          <span className="text-[11px] font-semibold tracking-wider text-primary uppercase">
+          <span className="text-detalii font-semibold tracking-wider text-primary">
             ideo ideis · peretele amintirilor
           </span>
-          <h2 className="text-2xl md:text-3xl font-semibold text-foreground mt-2 mb-2">poveștile noastre</h2>
-          <p className="text-muted-foreground text-sm max-w-lg leading-relaxed">
+          <h2 className="text-titlu-capitol mt-2 mb-2">poveștile noastre</h2>
+          <p className="text-body text-white/85 max-w-lg">
             scrisori către noi, cei de la 16 ani, și către oamenii care au avut atunci încredere în noi
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {paginatedLetters.map((letter, index) => (
+          {paginatedLetters.map((letter) => (
             <LetterCard
               key={letter.id}
-              letter={{ ...letter, images: letter.images ?? [] }}
-              index={(currentPage - 1) * LETTERS_PER_PAGE + index}
+              letter={{
+              ...letter,
+              images: letter.images ?? [],
+              audios: letter.audios ?? [],
+              videos: letter.videos ?? [],
+            }}
               isHighlighted={letter.id === highlightLetterId}
               onOpenDetail={() => openDetail(letter)}
             />
@@ -296,20 +302,20 @@ const LettersWall = ({
               type="button"
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
               disabled={currentPage <= 1}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-muted/50 disabled:pointer-events-none disabled:opacity-50 transition-colors"
+              className="inline-flex items-center gap-1.5 rounded border border-white/30 bg-white/10 px-4 py-2 text-body font-medium text-white hover:bg-white/20 disabled:pointer-events-none disabled:opacity-50 transition-colors"
               aria-label="Pagina anterioară"
             >
               <ChevronLeft className="w-4 h-4" />
               înapoi
             </button>
-            <span className="text-sm text-muted-foreground tabular-nums">
+            <span className="text-sm text-white/80 tabular-nums">
               pagina {currentPage} din {totalPages}
             </span>
             <button
               type="button"
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
               disabled={currentPage >= totalPages}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-muted/50 disabled:pointer-events-none disabled:opacity-50 transition-colors"
+              className="inline-flex items-center gap-1.5 rounded border border-white/30 bg-white/10 px-4 py-2 text-body font-medium text-white hover:bg-white/20 disabled:pointer-events-none disabled:opacity-50 transition-colors"
               aria-label="Pagina următoare"
             >
               înainte
@@ -325,10 +331,10 @@ const LettersWall = ({
         />
 
         <div className="mt-6 lg:mt-8 text-left flex flex-wrap items-center gap-3">
-          <p className="text-muted-foreground text-sm">
-            și tu? <a href="#write" className="text-primary hover:underline font-medium">scrie aici ↑</a>
+          <p className="text-body text-white/90">
+            și tu? <a href="#write" className="text-primary hover:underline font-semibold">scrie aici ↑</a>
           </p>
-          <span className="text-xs text-muted-foreground/60 tracking-wide">· ideo ideis</span>
+          <span className="text-detalii text-white/60 tracking-wide">· ideo ideis</span>
         </div>
       </div>
     </section>

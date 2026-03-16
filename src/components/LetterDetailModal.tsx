@@ -13,7 +13,8 @@ export interface LetterForModal {
   author: string;
   content: string;
   images: string[];
-  audio?: string;
+  audios?: string[];
+  videos?: string[];
   createdAt: Date;
 }
 
@@ -55,9 +56,9 @@ export function LetterDetailModal({
   open,
   onOpenChange,
 }: LetterDetailModalProps) {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [playingAudioIndex, setPlayingAudioIndex] = useState<number | null>(null);
   const [linkCopied, setLinkCopied] = useState(false);
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const audioRefs = useRef<(HTMLAudioElement | null)[]>([]);
   const { toast } = useToast();
 
   const shareUrl = letter ? getShareUrl(letter.id) : "";
@@ -126,14 +127,19 @@ export function LetterDetailModal({
     }
   };
 
-  const toggleAudio = () => {
-    if (!audioRef.current) return;
-    if (isPlaying) {
-      audioRef.current.pause();
+  const toggleAudio = (index: number) => {
+    const el = audioRefs.current[index];
+    if (!el) return;
+    if (playingAudioIndex === index) {
+      el.pause();
+      setPlayingAudioIndex(null);
     } else {
-      audioRef.current.play();
+      audioRefs.current.forEach((a, i) => {
+        if (i !== index && a) a.pause();
+      });
+      el.play();
+      setPlayingAudioIndex(index);
     }
-    setIsPlaying(!isPlaying);
   };
 
   if (!letter) return null;
@@ -156,9 +162,11 @@ export function LetterDetailModal({
             </span>
           </div>
 
-          <p className="text-foreground leading-relaxed whitespace-pre-wrap font-[450] break-words">
-            {letter.content}
-          </p>
+          {letter.content.trim() && (
+            <p className="text-foreground leading-relaxed whitespace-pre-wrap font-[450] break-words">
+              {letter.content}
+            </p>
+          )}
 
           {letter.images.length > 0 && (
             <div className="space-y-3">
@@ -182,33 +190,64 @@ export function LetterDetailModal({
             </div>
           )}
 
-          {letter.audio && (
-            <div className="space-y-2">
+          {(letter.videos?.length ?? 0) > 0 && (
+            <div className="space-y-3">
+              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                video
+              </p>
+              <div className="space-y-3">
+                {letter.videos!.map((src, i) => (
+                  <div
+                    key={i}
+                    className="rounded-lg overflow-hidden border border-border bg-muted/30 min-w-0"
+                  >
+                    <video
+                      src={src}
+                      controls
+                      className="w-full h-auto max-h-80 object-contain"
+                      playsInline
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {(letter.audios?.length ?? 0) > 0 && (
+            <div className="space-y-3">
               <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                 mesaj audio
               </p>
-              <div className="flex items-center gap-3 p-4 rounded-lg border border-border bg-muted/20">
-                <button
-                  type="button"
-                  onClick={toggleAudio}
-                  className="flex items-center justify-center w-12 h-12 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
-                >
-                  {isPlaying ? (
-                    <Pause className="w-6 h-6" />
-                  ) : (
-                    <Play className="w-6 h-6 ml-0.5" />
-                  )}
-                </button>
-                <span className="text-sm text-muted-foreground">
-                  {isPlaying ? "pauză" : "ascultă"}
-                </span>
-                <audio
-                  ref={audioRef}
-                  src={letter.audio}
-                  onEnded={() => setIsPlaying(false)}
-                  onPause={() => setIsPlaying(false)}
-                  onPlay={() => setIsPlaying(true)}
-                />
+              <div className="space-y-3">
+                {letter.audios!.map((src, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center gap-3 p-4 rounded-lg border border-border bg-muted/20"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => toggleAudio(i)}
+                      className="flex items-center justify-center w-12 h-12 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                    >
+                      {playingAudioIndex === i ? (
+                        <Pause className="w-6 h-6" />
+                      ) : (
+                        <Play className="w-6 h-6 ml-0.5" />
+                      )}
+                    </button>
+                    <span className="text-sm text-muted-foreground">
+                      {playingAudioIndex === i ? "pauză" : "ascultă"}
+                      {letter.audios!.length > 1 ? ` ${i + 1}` : ""}
+                    </span>
+                    <audio
+                      ref={(el) => (audioRefs.current[i] = el)}
+                      src={src}
+                      onEnded={() => setPlayingAudioIndex(null)}
+                      onPause={() => setPlayingAudioIndex(null)}
+                      onPlay={() => setPlayingAudioIndex(i)}
+                    />
+                  </div>
+                ))}
               </div>
             </div>
           )}

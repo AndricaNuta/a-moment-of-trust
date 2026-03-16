@@ -1,46 +1,65 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Ideo Ideis – brand-aligned but warm & friendly
-   Typography: DM Sans (Söhne fallback). Colours: #E7004C, dark grays. Soft geometry, warm neutrals.
+/* Ideo Ideis – brand guidelines ian24
+   Typography: Söhne (Leicht/Buch body, Halbfett headlines). Colours: #E7004C, #2c2d34.
+   Ierarhie: titlu general > titlu capitol > body text > detalii. Aliniere stânga. Geometrie dreaptă.
 */
+
+/* Söhne – brand font family */
+@font-face {
+  font-family: 'Söhne';
+  src: url('./assets/fonts/Söhne-Leicht.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Söhne';
+  src: url('./assets/fonts/Söhne-Halbfett.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
 
 @layer base {
   :root {
-    /* Warm off-white (friendly, not cold) */
-    --background: 40 25% 98%;
-    --foreground: 230 12% 20%;
+    /* Brand: #E7004C (primary), #2c2d34 (foreground/dark gray), #222324 (darker) */
+    --background: 0 0% 100%;
+    --foreground: 234 8% 19%; /* #2c2d34 */
+    --foreground-darker: 240 5% 13%; /* #222324 */
 
-    --card: 40 20% 97%;
-    --card-foreground: 230 12% 20%;
+    --card: 40 20% 98%;
+    --card-foreground: 234 8% 19%;
 
-    --popover: 40 25% 99%;
-    --popover-foreground: 230 12% 20%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 234 8% 19%;
 
-    --primary: 340 100% 45%;
+    --primary: 340 100% 45%; /* #E7004C */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 40 20% 94%;
-    --secondary-foreground: 230 12% 22%;
+    --secondary: 40 10% 96%;
+    --secondary-foreground: 234 8% 19%;
 
-    --muted: 40 15% 93%;
-    --muted-foreground: 230 8% 42%;
+    --muted: 40 10% 95%;
+    --muted-foreground: 234 6% 42%;
 
-    --accent: 40 25% 92%;
-    --accent-foreground: 230 12% 20%;
+    --accent: 40 15% 94%;
+    --accent-foreground: 234 8% 19%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 40 15% 88%;
-    --input: 40 18% 92%;
+    --border: 40 10% 90%;
+    --input: 40 12% 93%;
     --ring: 340 100% 45%;
 
-    /* Soft, friendly corners */
-    --radius: 0.625rem; /* 10px */
+    /* Brand: geometrie dreaptă, unghiuri minime */
+    --radius: 0.25rem; /* 4px – minimal per brand */
+
+    --section-alt: 234 8% 19%; /* #2c2d34 for alternating sections */
+    --section-alt-foreground: 0 0% 100%; /* text on dark section */
 
     --ideo-red: 340 100% 45%;
     --ideo-teal: 178 100% 29%;
@@ -49,14 +68,20 @@
     --ideo-pink: 316 97% 46%;
     --ideo-cyan: 203 100% 39%;
 
-    --sidebar-background: 40 25% 98%;
-    --sidebar-foreground: 230 12% 20%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 234 8% 19%;
     --sidebar-primary: 340 100% 45%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 40 20% 94%;
-    --sidebar-accent-foreground: 230 12% 22%;
-    --sidebar-border: 40 15% 88%;
+    --sidebar-accent: 40 10% 96%;
+    --sidebar-accent-foreground: 234 8% 19%;
+    --sidebar-border: 40 10% 90%;
     --sidebar-ring: 340 100% 45%;
+
+    /* Typography hierarchy – brand guidelines */
+    --font-titlu-general: 2rem;   /* cea mai mare */
+    --font-titlu-capitol: 1.5rem; /* aceeași grosime, mai mic */
+    --font-body: 1rem;
+    --font-detalii: 0.875rem;
   }
 }
 
@@ -78,16 +103,21 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'DM Sans', system-ui, sans-serif;
+    font-family: 'Söhne', system-ui, sans-serif;
+    font-weight: 300;
+    font-size: var(--font-body);
     line-height: 1.65;
   }
 
+  /* Ierarhie tipografică – brand guidelines */
   h1, h2, h3 {
-    font-family: 'DM Sans', system-ui, sans-serif;
+    font-family: 'Söhne', system-ui, sans-serif;
     font-weight: 600;
     line-height: 1.25;
   }
 }
+
+/* Ierarhie: font-family moștenit de la body (Söhne). Titluri: font-semibold (600). */
 
 @layer utilities {
   .scroll-smooth {

@@ -13,21 +13,22 @@ const Terms = () => {
 
   return (
   <main className="min-h-screen bg-background">
-    <div className="container mx-auto px-6 lg:px-12 py-12 lg:py-16 max-w-3xl">
+    <div className="w-full pl-4 lg:pl-6 pt-8 lg:pt-10">
       <button
         type="button"
         onClick={handleBack}
-        className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-10"
+        className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="w-4 h-4" />
         Înapoi la pagină
       </button>
-
+    </div>
+    <div className="container mx-auto px-6 lg:px-12 py-8 lg:py-12 max-w-3xl text-left">
       <h1 className="text-2xl md:text-3xl font-semibold text-foreground mb-8">
         Termeni și confidențialitate
       </h1>
 
-      <div className="prose prose-neutral dark:prose-invert max-w-none space-y-8 text-muted-foreground text-sm leading-relaxed">
+      <div className="prose prose-neutral dark:prose-invert max-w-none space-y-8 text-muted-foreground text-sm leading-relaxed text-left">
         <section>
           <h2 className="text-base font-semibold text-foreground mb-2">
             Ce date colectăm

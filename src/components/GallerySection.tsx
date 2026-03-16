@@ -48,13 +48,13 @@ const GallerySection = ({ images }: GallerySectionProps) => {
     <section className="py-10 sm:py-14 lg:py-16 bg-background relative">
       <div className="container mx-auto px-4 sm:px-6 lg:px-12">
         <div className="text-left mb-6 sm:mb-8">
-          <span className="text-primary text-sm font-medium tracking-wide">
+          <span className="text-primary text-detalii font-semibold tracking-wide">
             momente
           </span>
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mt-2 mb-2">
+          <h2 className="text-titlu-capitol text-foreground mt-2 mb-2">
             încrederea în acțiune
           </h2>
-          <p className="text-muted-foreground max-w-lg text-sm leading-relaxed">
+          <p className="text-body text-muted-foreground max-w-lg">
             cineva care crede — cineva care începe să creadă în sine.
           </p>
         </div>
@@ -96,12 +96,14 @@ const GallerySection = ({ images }: GallerySectionProps) => {
           </div>
         </div>
 */}
-        <p className="mt-6 sm:mt-8 text-center text-muted-foreground text-sm">
+        {/*
+        <p className="mt-6 sm:mt-8 text-left text-body text-muted-foreground">
           iar tu?{" "}
-          <a href="#write" className="text-primary font-medium hover:underline">
+          <a href="#write" className="text-primary font-semibold hover:underline">
             scrie-i o scrisoare
           </a>
         </p>
+        */}
       </div>
     </section>
   );

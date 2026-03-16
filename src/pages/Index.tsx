@@ -25,7 +25,8 @@ interface Letter {
   author: string;
   content: string;
   images: string[];
-  audio?: string;
+  audios?: string[];
+  videos?: string[];
   createdAt: Date;
 }
 
@@ -127,7 +128,8 @@ const Index = () => {
       author: letterData.author,
       content: letterData.content,
       images: letterData.images?.length ? letterData.images : undefined,
-      audio: letterData.audio,
+      audios: letterData.audios?.length ? letterData.audios : undefined,
+      videos: letterData.videos?.length ? letterData.videos : undefined,
       isPrivate: letterData.isPrivate,
       promoConsent: letterData.promoConsent,
     });

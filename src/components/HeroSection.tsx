@@ -26,25 +26,25 @@ const HeroSection = ({ heroImage }: HeroSectionProps) => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-8 sm:py-12 lg:py-16 relative">
         <div className="grid lg:grid-cols-2 gap-6 sm:gap-10 lg:gap-16 items-center">
           <div className="order-2 lg:order-1 text-left">
-            <p className="text-xs text-muted-foreground tracking-[0.2em] uppercase mb-2 font-medium">
+            <p className="text-detalii text-muted-foreground tracking-wider mb-2 font-semibold">
               ideo ideis · o invitație să-ți amintești
             </p>
 
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.75rem] font-semibold text-foreground leading-[1.2] mb-3">
-              Cineva a avut încredere în mine la 16 ani.
+            <h1 className="text-titlu-general text-foreground mb-3">
+              cineva a avut încredere în mine la 16 ani.
             </h1>
 
-            <p className="text-lg text-foreground/90 font-medium leading-snug mb-4">
-              Astăzi poți fi tu acel „cineva” pentru un alt adolescent.
+            <p className="text-titlu-capitol text-foreground/90 leading-snug mb-4">
+              astăzi poți fi tu acel „cineva" pentru un alt adolescent.
             </p>
 
-            <p className="text-muted-foreground max-w-lg leading-relaxed mb-6 text-sm sm:text-base">
-              Întoarce-te pentru câteva minute la tine, cel de la 16 ani. Scrie-i o scrisoare și amintește-ți cine ți-a spus prima dată „cred în tine”. Apoi ajută-ne să oferim mai departe acea încredere.
+            <p className="text-body text-muted-foreground max-w-lg mb-6">
+              întoarce-te pentru câteva minute la tine, cel de la 16 ani. scrie-i o scrisoare și amintește-ți cine ți-a spus prima dată „cred în tine". apoi ajută-ne să oferim mai departe acea încredere.
             </p>
 
             <button
               onClick={scrollToWrite}
-              className="group inline-flex items-center gap-2 bg-primary text-primary-foreground font-medium px-5 py-2.5 rounded-lg shadow-sm hover:bg-primary/90 hover:shadow transition-all duration-200"
+              className="group inline-flex items-center gap-2 bg-primary text-primary-foreground font-semibold px-5 py-2.5 rounded shadow-sm hover:bg-primary/90 hover:shadow transition-all duration-200"
             >
               <span>scrie o scrisoare</span>
               <ChevronDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" />
@@ -56,7 +56,7 @@ const HeroSection = ({ heroImage }: HeroSectionProps) => {
               <img
                 src={heroImage}
                 alt="Un adolescent cu privirea spre viitor"
-                className="w-full aspect-[4/5] object-cover rounded-2xl shadow-lg photo-warm max-w-full"
+                className="w-full aspect-[4/5] object-cover rounded shadow-lg photo-warm max-w-full"
                 fetchPriority="high"
                 decoding="async"
               />
@@ -71,7 +71,7 @@ const HeroSection = ({ heroImage }: HeroSectionProps) => {
         className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
         aria-label="Descoperă cum funcționează"
       >
-        <span className="text-xs tracking-widest uppercase">descoperă</span>
+        <span className="text-detalii tracking-widest">descoperă</span>
         <ChevronDown className="w-3.5 h-3.5 animate-bounce" />
       </button>
     </section>

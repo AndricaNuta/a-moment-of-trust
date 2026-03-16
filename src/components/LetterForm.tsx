@@ -1,6 +1,87 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Mic, MicOff, Send, X, Image, FileAudio, Play, Pause } from "lucide-react";
+import { Mic, MicOff, Send, X, Image, FileAudio, Play, Pause, Video } from "lucide-react";
+
+function VideoPreviewItem({ file, onRemove }: { file: File; onRemove: () => void }) {
+  const [url, setUrl] = useState<string>("");
+  useEffect(() => {
+    const u = URL.createObjectURL(file);
+    setUrl(u);
+    return () => URL.revokeObjectURL(u);
+  }, [file]);
+
+  return (
+    <div className="relative border border-border rounded-lg overflow-hidden shadow-sm max-w-[200px]">
+      <video
+        src={url}
+        controls
+        className="w-full h-auto max-h-32 object-cover"
+        muted
+        playsInline
+      />
+      <button
+        type="button"
+        onClick={onRemove}
+        className="absolute top-0 right-0 w-6 h-6 rounded-bl-md bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90"
+      >
+        <X className="w-3 h-3" />
+      </button>
+    </div>
+  );
+}
+
+function AudioPreviewItem({
+  src,
+  index,
+  onRemove,
+}: {
+  src: string;
+  index: number;
+  onRemove: () => void;
+}) {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const ref = useRef<HTMLAudioElement>(null);
+
+  return (
+    <div className="relative bg-background/40 border border-border rounded-lg p-4 flex items-center gap-3 flex-wrap">
+      <button
+        type="button"
+        onClick={() => {
+          if (ref.current) {
+            if (isPlaying) ref.current.pause();
+            else ref.current.play();
+            setIsPlaying(!isPlaying);
+          }
+        }}
+        className="flex items-center gap-2 rounded-lg bg-primary text-primary-foreground px-3 py-2 hover:bg-primary/90"
+      >
+        {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+        <span className="text-sm">{isPlaying ? "pauză" : "ascultă"}</span>
+      </button>
+      <span className="text-sm text-muted-foreground">mesaj audio {index + 1}</span>
+      <button
+        type="button"
+        onClick={() => {
+          ref.current?.pause();
+          setIsPlaying(false);
+          onRemove();
+        }}
+        className="w-6 h-6 rounded-md bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90"
+        aria-label="Elimină audio"
+      >
+        <X className="w-3 h-3" />
+      </button>
+      <audio
+        ref={ref}
+        src={src}
+        onEnded={() => setIsPlaying(false)}
+        onPause={() => setIsPlaying(false)}
+        onPlay={() => setIsPlaying(true)}
+        className="hidden"
+      />
+    </div>
+  );
+}
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -12,7 +93,8 @@ interface Letter {
   author: string;
   content: string;
   images: string[];
-  audio?: string;
+  audios?: string[];
+  videos?: string[];
   createdAt: Date;
   isPrivate?: boolean;
 }
@@ -30,16 +112,16 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
   const [author, setAuthor] = useState("");
   const [content, setContent] = useState("");
   const [images, setImages] = useState<string[]>([]);
-  const [audio, setAudio] = useState<string | null>(null);
+  const [videoFiles, setVideoFiles] = useState<File[]>([]);
+  const [audios, setAudios] = useState<string[]>([]);
   const [isPrivate, setIsPrivate] = useState(false);
   const [promoConsent, setPromoConsent] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [recordingElapsedSeconds, setRecordingElapsedSeconds] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isPlayingPreview, setIsPlayingPreview] = useState(false);
 
   const imageInputRef = useRef<HTMLInputElement>(null);
-  const audioPreviewRef = useRef<HTMLAudioElement>(null);
+  const videoInputRef = useRef<HTMLInputElement>(null);
   const audioInputRef = useRef<HTMLInputElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
@@ -94,24 +176,69 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleAudioUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 10 * 1024 * 1024) {
+  const handleVideoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files?.length) return;
+    const maxSize = 50 * 1024 * 1024; // 50MB
+    const maxCount = 10;
+    const toAdd: File[] = [];
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (file.size > maxSize) {
         toast({
           title: "Fișier prea mare",
-          description: "Înregistrarea trebuie să fie mai mică de 10MB",
+          description: "Fiecare video trebuie să fie mai mic de 50MB",
           variant: "destructive",
         });
-        return;
+        continue;
+      }
+      toAdd.push(file);
+    }
+    if (toAdd.length > 0) {
+      setVideoFiles((prev) => [...prev, ...toAdd].slice(0, maxCount));
+    }
+    e.target.value = "";
+  };
+
+  const removeVideo = (index: number) =>
+    setVideoFiles((prev) => prev.filter((_, i) => i !== index));
+
+  const handleAudioUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files?.length) return;
+    const maxSize = 10 * 1024 * 1024; // 10MB
+    const maxCount = 10;
+    const toAdd: string[] = [];
+    let processed = 0;
+    const finish = () => {
+      processed++;
+      if (processed === files.length) {
+        setAudios((prev) => [...prev, ...toAdd].slice(0, maxCount));
+        e.target.value = "";
+      }
+    };
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (file.size > maxSize) {
+        toast({
+          title: "Fișier prea mare",
+          description: "Fiecare fișier audio trebuie să fie mai mic de 10MB",
+          variant: "destructive",
+        });
+        finish();
+        continue;
       }
       const reader = new FileReader();
       reader.onloadend = () => {
-        setAudio(reader.result as string);
+        toAdd.push(reader.result as string);
+        finish();
       };
       reader.readAsDataURL(file);
     }
+    e.target.value = "";
   };
+
+  const removeAudio = (index: number) => setAudios((prev) => prev.filter((_, i) => i !== index));
 
   const startRecording = async () => {
     try {
@@ -128,7 +255,7 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
         const audioBlob = new Blob(audioChunksRef.current, { type: "audio/webm" });
         const reader = new FileReader();
         reader.onloadend = () => {
-          setAudio(reader.result as string);
+          setAudios((prev) => [...prev, reader.result as string].slice(0, 10));
         };
         reader.readAsDataURL(audioBlob);
         stream.getTracks().forEach((track) => track.stop());
@@ -175,13 +302,16 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
     }
   };
 
+  const hasContent = content.trim().length > 0;
+  const hasMedia = images.length > 0 || videoFiles.length > 0 || audios.length > 0;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!content.trim()) {
+    if (!hasContent && !hasMedia) {
       toast({
         title: "Hei, scrisoarea e goală",
-        description: "Scrie câteva cuvinte pentru persoana care a crezut în tine.",
+        description: "Scrie câteva cuvinte sau încarcă video, audio sau poze.",
         variant: "destructive",
       });
       return;
@@ -199,18 +329,44 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
     setIsSubmitting(true);
 
     try {
+      let videoDataUrls: string[] | undefined;
+      if (videoFiles.length > 0) {
+        try {
+          videoDataUrls = await Promise.all(
+            videoFiles.map(
+              (f) =>
+                new Promise<string>((resolve, reject) => {
+                  const r = new FileReader();
+                  r.onloadend = () => resolve(r.result as string);
+                  r.onerror = () => reject(new Error("Nu s-a putut procesa video-ul"));
+                  r.readAsDataURL(f);
+                })
+            )
+          );
+        } catch {
+          toast({
+            title: "Eroare la procesarea video",
+            description: "Încearcă un fișier mai mic.",
+            variant: "destructive",
+          });
+          return;
+        }
+      }
+
       await onSubmit({
         author: author.trim() || "cineva care își amintește",
-        content: content.trim(),
+        content: content.trim() || "",
         images,
-        audio: audio || undefined,
+        audios: audios.length ? audios : undefined,
+        videos: videoDataUrls,
         isPrivate,
         promoConsent,
       });
       setAuthor("");
       setContent("");
       setImages([]);
-      setAudio(null);
+      setVideoFiles([]);
+      setAudios([]);
       setIsPrivate(false);
       setPromoConsent(false);
       toast({
@@ -236,17 +392,17 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
       <div className="container mx-auto px-6 lg:px-12">
         <div className="max-w-2xl mx-auto">
           <div className="text-left mb-10">
-            <span className="text-[11px] font-semibold tracking-wider text-primary uppercase">ideo ideis</span>
-            <h2 className="text-2xl md:text-3xl font-semibold text-foreground mt-2 mb-2">
+            <span className="text-detalii font-semibold tracking-wider text-primary">ideo ideis</span>
+            <h2 className="text-titlu-capitol text-foreground mt-2 mb-2">
               scrie o scrisoare
             </h2>
-            <p className="text-muted-foreground text-sm leading-relaxed max-w-lg">
-              Câteva rânduri către tine, cel de la 16 ani, despre cine a avut încredere în tine atunci și ce a însemnat acel moment.
+            <p className="text-body text-muted-foreground max-w-lg">
+              scrie câteva rânduri sau încarcă video, audio sau poze — către tine, cel de la 16 ani, despre cine a avut încredere în tine atunci și ce a însemnat acel moment.
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="relative">
-            <div className="note-paper letter-fold relative rounded-xl p-6 md:p-8 pl-7 md:pl-9">
+            <div className="note-paper letter-fold relative rounded p-6 md:p-8 pl-7 md:pl-9 bg-card text-foreground">
               <div className="mb-6">
                 <label className="block text-sm font-medium text-muted-foreground mb-2">
                   de la:
@@ -256,7 +412,7 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
                   value={author}
                   onChange={(e) => setAuthor(e.target.value)}
                   placeholder="numele tău [sau lasă gol]"
-                  className="border-border bg-background/50 focus-visible:ring-primary/25 rounded-lg placeholder:text-muted-foreground/80"
+                  className="border-border bg-background/50 focus-visible:ring-primary/25 rounded placeholder:text-muted-foreground/80"
                 />
               </div>
 
@@ -264,112 +420,120 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
                 <label className="block text-sm font-medium text-muted-foreground mb-2">
                   scrisoarea ta:
                 </label>
+                <p className="text-xs text-muted-foreground/80 mb-2">
+                  poți scrie text sau doar încărca video / audio / poze mai jos
+                </p>
                 <Textarea
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
                   placeholder={"Dragă [numele tău] de la 16 ani,\n\nAstăzi mi-am amintit de momentul în care cineva a avut încredere în tine...\n\nPoate nu știai atunci cât de mult avea să conteze, dar... "}
-                  className="border-border bg-background/50 min-h-[200px] resize-none leading-relaxed rounded-lg placeholder:text-muted-foreground/80 focus-visible:ring-primary/25"
+                  className="border-border bg-background/50 min-h-[200px] resize-none leading-relaxed rounded placeholder:text-muted-foreground/80 focus-visible:ring-primary/25"
                 />
               </div>
 
               <div className="space-y-4">
-                <p className="text-sm font-medium text-muted-foreground">atașează amintiri?</p>
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground mb-1">atașează amintiri</p>
+                  <p className="text-xs text-muted-foreground/80">
+                    poze, video, audio sau înregistrare vocală
+                  </p>
+                </div>
 
-                <div className="flex flex-wrap gap-3">
-                  <div>
-                    <input
-                      type="file"
-                      ref={imageInputRef}
-                      onChange={handleImageUpload}
-                      accept="image/*"
-                      multiple
-                      className="hidden"
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => imageInputRef.current?.click()}
-                      className="gap-2 border-border bg-background/40 hover:bg-primary/5 hover:border-primary/30 text-foreground rounded-lg"
-                    >
-                      <Image className="w-4 h-4" />
-                      {images.length ? `+ poze (${images.length})` : "poze"}
-                    </Button>
-                  </div>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <input
+                    type="file"
+                    ref={imageInputRef}
+                    onChange={handleImageUpload}
+                    accept="image/*"
+                    multiple
+                    className="hidden"
+                  />
+                  <input
+                    type="file"
+                    ref={videoInputRef}
+                    onChange={handleVideoUpload}
+                    accept="video/*"
+                    multiple
+                    className="hidden"
+                  />
+                  <input
+                    type="file"
+                    ref={audioInputRef}
+                    onChange={handleAudioUpload}
+                    accept="audio/*"
+                    multiple
+                    className="hidden"
+                  />
 
-                  <div>
-                    <input
-                      type="file"
-                      ref={audioInputRef}
-                      onChange={handleAudioUpload}
-                      accept="audio/*"
-                      className="hidden"
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => audioInputRef.current?.click()}
-                      className="gap-2 border-border bg-background/40 hover:bg-primary/5 hover:border-primary/30 text-foreground rounded-lg"
-                    >
-                      <FileAudio className="w-4 h-4" />
-                      {audio ? "alt fișier" : "un audio"}
-                    </Button>
-                  </div>
-
-                  <Button
+                  <button
                     type="button"
-                    variant="outline"
-                    size="sm"
+                    onClick={() => imageInputRef.current?.click()}
+                    className="flex flex-col items-center gap-2 p-4 rounded-lg border border-border bg-background/40 hover:bg-primary/5 hover:border-primary/30 transition-colors text-foreground"
+                  >
+                    <Image className="w-6 h-6 text-primary" />
+                    <span className="text-sm font-medium">poze</span>
+                    {images.length > 0 && (
+                      <span className="text-xs text-muted-foreground tabular-nums">{images.length}</span>
+                    )}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (videoInputRef.current) {
+                        videoInputRef.current.value = "";
+                        videoInputRef.current.click();
+                      }
+                    }}
+                    className="flex flex-col items-center gap-2 p-4 rounded-lg border border-border bg-background/40 hover:bg-primary/5 hover:border-primary/30 transition-colors text-foreground"
+                  >
+                    <Video className="w-6 h-6 text-primary" />
+                    <span className="text-sm font-medium">video</span>
+                    {videoFiles.length > 0 && (
+                      <span className="text-xs text-muted-foreground tabular-nums">{videoFiles.length}</span>
+                    )}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => audioInputRef.current?.click()}
+                    className="flex flex-col items-center gap-2 p-4 rounded-lg border border-border bg-background/40 hover:bg-primary/5 hover:border-primary/30 transition-colors text-foreground"
+                  >
+                    <FileAudio className="w-6 h-6 text-primary" />
+                    <span className="text-sm font-medium">audio</span>
+                    {audios.length > 0 && (
+                      <span className="text-xs text-muted-foreground tabular-nums">{audios.length}</span>
+                    )}
+                  </button>
+
+                  <button
+                    type="button"
                     onClick={isRecording ? stopRecording : startRecording}
-                    className={`gap-2 rounded-lg ${isRecording ? "text-primary border-primary/50 bg-primary/10" : "border-border bg-background/40 hover:bg-primary/5 hover:border-primary/30 text-foreground"}`}
+                    className={`flex flex-col items-center gap-2 p-4 rounded-lg border transition-colors ${
+                      isRecording
+                        ? "text-primary border-primary/50 bg-primary/10"
+                        : "border-border bg-background/40 hover:bg-primary/5 hover:border-primary/30 text-foreground"
+                    }`}
                   >
                     {isRecording ? (
-                      <>
-                        <MicOff className="w-4 h-4" />
-                        oprește
-                        <span className="tabular-nums text-muted-foreground">
-                          {formatRecordingTime(recordingElapsedSeconds)} / {formatRecordingTime(MAX_RECORDING_SECONDS)}
-                        </span>
-                      </>
+                      <MicOff className="w-6 h-6" />
                     ) : (
-                      <>
-                        <Mic className="w-4 h-4" />
-                        înregistrează
-                      </>
+                      <Mic className="w-6 h-6 text-primary" />
                     )}
-                  </Button>
+                    <span className="text-sm font-medium">{isRecording ? "oprește" : "înregistrează"}</span>
+                    {isRecording && (
+                      <span className="text-xs tabular-nums text-muted-foreground">
+                        {formatRecordingTime(recordingElapsedSeconds)} / {formatRecordingTime(MAX_RECORDING_SECONDS)}
+                      </span>
+                    )}
+                  </button>
                 </div>
 
-                <div className="pt-4 mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <Checkbox
-                      checked={isPrivate}
-                      onCheckedChange={(v) => setIsPrivate(v === true)}
-                      className="rounded border-border h-3.5 w-3.5"
-                    />
-                    <span>Vreau sa ramana privata</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <Checkbox
-                      checked={promoConsent}
-                      onCheckedChange={(v) => setPromoConsent(v === true)}
-                      className="rounded border-border h-3.5 w-3.5"
-                    />
-                    <span>
-                      Sunt de acord cu{" "}
-                      <Link to="/termeni" className="underline hover:text-foreground/80">
-                        termenii și confidențialitatea
-                      </Link>{" "}
-                    </span>
-                  </label>
-                </div>
-
-                {(images.length > 0 || audio) && (
-                  <div className="flex flex-wrap gap-4 pt-4">
+                {(images.length > 0 || videoFiles.length > 0 || audios.length > 0) && (
+                  <div className="flex flex-wrap gap-4 pt-4 mt-4">
                     {images.map((img, idx) => (
                       <div
-                        key={idx}
+                        key={`img-${idx}`}
                         className="relative border border-border rounded-lg overflow-hidden shadow-sm"
                       >
                         <img
@@ -386,63 +550,59 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
                         </button>
                       </div>
                     ))}
-                    {audio && (
-                      <div className="relative bg-background/40 border border-border rounded-lg p-4 flex items-center gap-3 flex-wrap">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (audioPreviewRef.current) {
-                              if (isPlayingPreview) {
-                                audioPreviewRef.current.pause();
-                              } else {
-                                audioPreviewRef.current.play();
-                              }
-                              setIsPlayingPreview(!isPlayingPreview);
-                            }
-                          }}
-                          className="flex items-center gap-2 rounded-lg bg-primary text-primary-foreground px-3 py-2 hover:bg-primary/90"
-                        >
-                          {isPlayingPreview ? (
-                            <Pause className="w-4 h-4" />
-                          ) : (
-                            <Play className="w-4 h-4" />
-                          )}
-                          <span className="text-sm">
-                            {isPlayingPreview ? "pauză" : "ascultă"}
-                          </span>
-                        </button>
-                        <span className="text-sm text-muted-foreground">mesaj audio</span>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            audioPreviewRef.current?.pause();
-                            setIsPlayingPreview(false);
-                            setAudio(null);
-                          }}
-                          className="w-6 h-6 rounded-md bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90"
-                          aria-label="Elimină audio"
-                        >
-                          <X className="w-3 h-3" />
-                        </button>
-                        <audio
-                          ref={audioPreviewRef}
-                          src={audio}
-                          onEnded={() => setIsPlayingPreview(false)}
-                          onPause={() => setIsPlayingPreview(false)}
-                          onPlay={() => setIsPlayingPreview(true)}
-                          className="hidden"
-                        />
-                      </div>
-                    )}
+                    {videoFiles.map((file, idx) => (
+                      <VideoPreviewItem
+                        key={`vid-${idx}`}
+                        file={file}
+                        onRemove={() => removeVideo(idx)}
+                      />
+                    ))}
+                    {audios.map((a, idx) => (
+                      <AudioPreviewItem
+                        key={`aud-${idx}`}
+                        src={a}
+                        index={idx}
+                        onRemove={() => removeAudio(idx)}
+                      />
+                    ))}
                   </div>
                 )}
+
+                <div className="pt-4 mt-4 space-y-3">
+                  <p className="text-xs text-muted-foreground">
+                    Dacă nu bifezi „privată”, scrisoarea va apărea pe peretele amintirilor de pe site.
+                  </p>
+                  <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <Checkbox
+                        checked={isPrivate}
+                        onCheckedChange={(v) => setIsPrivate(v === true)}
+                        className="rounded border-border h-3.5 w-3.5"
+                      />
+                      <span>Vreau să rămână privată</span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <Checkbox
+                        checked={promoConsent}
+                        onCheckedChange={(v) => setPromoConsent(v === true)}
+                        className="rounded border-border h-3.5 w-3.5"
+                      />
+                      <span>
+                        Sunt de acord cu{" "}
+                        <Link to="/termeni" className="underline hover:text-foreground/80">
+                          termenii și confidențialitatea
+                        </Link>{" "}
+                      </span>
+                    </label>
+                  </div>
+                </div>
               </div>
 
               <div className="mt-8 flex justify-end">
                 <Button
                   type="submit"
                   disabled={isSubmitting || !promoConsent}
-                  className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-5 rounded-lg font-medium shadow-sm"
+                  className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-5 rounded font-semibold shadow-sm"
                 >
                   {isSubmitting ? (
                     "se trimite..."

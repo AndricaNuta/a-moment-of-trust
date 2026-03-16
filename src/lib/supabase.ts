@@ -21,6 +21,9 @@ export type LetterRow = {
   image_url: string | null;
   image_urls?: string[] | null;
   audio_url: string | null;
+  audio_urls?: string[] | null;
+  video_url?: string | null;
+  video_urls?: string[] | null;
   is_private?: boolean;
   promo_consent?: boolean;
   created_at: string;

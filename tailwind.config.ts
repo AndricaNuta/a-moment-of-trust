@@ -14,7 +14,13 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['DM Sans', 'system-ui', 'sans-serif'],
+        sans: ['Söhne', 'system-ui', 'sans-serif'],
+      },
+      fontSize: {
+        'titlu-general': ['clamp(1.75rem, 4vw, 2.5rem)', { lineHeight: '1.2' }],
+        'titlu-capitol': ['clamp(1.25rem, 2.5vw, 1.5rem)', { lineHeight: '1.25' }],
+        'body': ['1rem', { lineHeight: '1.65' }],
+        'detalii': ['0.875rem', { lineHeight: '1.5' }],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -60,6 +66,9 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // Ideo Ideis brand – #2c2d34 (section alt), text on dark
+        "section-alt": "hsl(var(--section-alt))",
+        "section-alt-foreground": "hsl(var(--section-alt-foreground))",
         // Ideo Ideis brand colors
         ideo: {
           red: "hsl(var(--ideo-red))",

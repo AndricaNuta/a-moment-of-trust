@@ -80,10 +80,10 @@ The letter form persists to [Supabase](https://supabase.com) (free tier).
 Without `.env` configured, the app still runs: letters are kept in memory only and new submissions appear on the wall until refresh.
 
 **Deploy pe GitHub Pages (workflow `.github/workflows/deploy-pages.yml`)**  
-Dacă aplicația e embedded pe alt domeniu (ex. ideoideis.ro), adaugă în **Settings → Secrets and variables → Actions** un secret numit `VITE_SHARE_BASE_URL` cu URL-ul paginii unde e embedded (ex. `https://ideoideis.ro/elementor-9069`). Astfel, linkurile de share (Facebook, WhatsApp, copiere) vor pointa către acel site, nu către github.io.
+Dacă aplicația e embedded pe alt domeniu (ex. ideoideis.ro), adaugă în **Settings → Secrets and variables → Actions** un secret numit `VITE_SHARE_BASE_URL` cu URL-ul paginii unde e embedded (ex. `https://ideoideis.ro/incredere-la-16-ani`). Astfel, linkurile de share (Facebook, WhatsApp, copiere) vor pointa către acel site, nu către github.io.
 
 **Link share în iframe (WordPress / Elementor)**  
-Când cineva deschide un link de tipul `https://ideoideis.ro/elementor-9069#letter-6aa6cc33-e838-4b4f-8cc0-0b7e4e41d25d`, hash-ul (`#letter-...`) este în URL-ul paginii părinte; iframe-ul nu îl vede automat. Pentru ca scrisoarea partajată să se deschidă în app, pe **pagina WordPress** trebuie adăugat un script care fie (A) pasează hash-ul în iframe, fie (B) trimite id-ul scrisorii prin postMessage.
+Când cineva deschide un link de tipul `https://ideoideis.ro/incredere-la-16-ani/#letter-6aa6cc33-e838-4b4f-8cc0-0b7e4e41d25d`, hash-ul (`#letter-...`) este în URL-ul paginii părinte; iframe-ul nu îl vede automat. Pentru ca scrisoarea partajată să se deschidă în app, pe **pagina WordPress** trebuie adăugat un script care fie (A) pasează hash-ul în iframe, fie (B) trimite id-ul scrisorii prin postMessage.
 
 - **Varianta A – hash în src-ul iframe-ului**  
   Pe pagina Elementor unde e embedded iframe-ul, adaugă un **HTML** sau **Code** widget cu:
