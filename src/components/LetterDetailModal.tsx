@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { Play, Pause, Link2, Check } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 import {
   Dialog,
   DialogContent,
@@ -69,17 +70,21 @@ export function LetterDetailModal({
   };
 
   const shareFacebook = () => {
+    if (letter) trackEvent({ event_type: "letter_shared", letter_id: letter.id, platform: "facebook" });
     openShare(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`);
   };
   const shareTwitter = () => {
+    if (letter) trackEvent({ event_type: "letter_shared", letter_id: letter.id, platform: "twitter" });
     openShare(
       `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`
     );
   };
   const shareLinkedIn = () => {
+    if (letter) trackEvent({ event_type: "letter_shared", letter_id: letter.id, platform: "linkedin" });
     openShare(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`);
   };
   const shareWhatsApp = () => {
+    if (letter) trackEvent({ event_type: "letter_shared", letter_id: letter.id, platform: "whatsapp" });
     openShare(`https://wa.me/?text=${encodeURIComponent(shareText + " " + shareUrl)}`);
   };
 
@@ -104,6 +109,7 @@ export function LetterDetailModal({
     };
 
     try {
+      if (letter) trackEvent({ event_type: "letter_shared", letter_id: letter.id, platform: "copy_link" });
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(shareUrl);
       } else {
@@ -163,7 +169,7 @@ export function LetterDetailModal({
           </div>
 
           {letter.content.trim() && (
-            <p className="text-foreground leading-relaxed whitespace-pre-wrap font-[450] break-words">
+            <p className="text-foreground text-body leading-relaxed whitespace-pre-wrap font-normal break-words">
               {letter.content}
             </p>
           )}

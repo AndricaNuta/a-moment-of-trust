@@ -55,7 +55,7 @@ const GallerySection = ({ images }: GallerySectionProps) => {
             încrederea în acțiune
           </h2>
           <p className="text-body text-muted-foreground max-w-lg">
-            cineva care crede — cineva care începe să creadă în sine.
+            cineva care crede - cineva care începe să creadă în sine.
           </p>
         </div>
 

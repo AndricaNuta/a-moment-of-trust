@@ -1,6 +1,7 @@
 import { Play, Maximize2, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useRef, useMemo, useEffect } from "react";
 import { LetterDetailModal, type LetterForModal } from "@/components/LetterDetailModal";
+import { trackEvent } from "@/lib/analytics";
 
 const ROWS_PREVIEW = 3;
 const COLS_LG = 3;
@@ -90,7 +91,7 @@ const LetterCard = ({
           onOpenDetail();
         }
       }}
-      className={`note-paper letter-fold rounded transition-all duration-200 relative pl-5 cursor-pointer hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 ${isHighlighted ? "ring-2 ring-primary/60 ring-offset-2 ring-offset-background shadow-lg animate-in fade-in duration-500" : ""}`}
+      className={`note-paper letter-fold transition-all duration-200 relative pl-5 cursor-pointer hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 ${isHighlighted ? "ring-2 ring-primary/60 ring-offset-2 ring-offset-background shadow-lg animate-in fade-in duration-500" : ""}`}
       aria-label={`Citește scrisoarea de la ${letter.author}`}
     >
       <div className="p-5 pt-6 pb-10">
@@ -220,6 +221,11 @@ const LettersWall = ({
     if (!openLetterIdFromUrl || letters.length === 0) return;
     const letter = letters.find((l) => l.id === openLetterIdFromUrl);
     if (letter) {
+      trackEvent({
+        event_type: "letter_opened",
+        letter_id: letter.id,
+        from_share_link: true,
+      });
       setDetailLetter({
         ...letter,
         images: letter.images ?? [],
@@ -233,6 +239,11 @@ const LettersWall = ({
   }, [openLetterIdFromUrl, letters, onOpenLetterFromUrlHandled]);
 
   const openDetail = (letter: Letter) => {
+    trackEvent({
+      event_type: "letter_opened",
+      letter_id: letter.id,
+      from_share_link: false,
+    });
     setDetailLetter({
       ...letter,
       images: letter.images ?? [],
@@ -247,7 +258,7 @@ const LettersWall = ({
       <section id="letters" className="py-14 lg:py-16 bg-section-alt text-section-alt-foreground">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="max-w-xl text-left">
-            <div className="note-paper letter-fold rounded p-6 md:p-8 pl-7 text-left bg-card text-foreground">
+            <div className="note-paper letter-fold p-6 md:p-8 pl-7 text-left bg-card text-foreground">
               <span className="text-detalii font-semibold tracking-wider text-primary">
                 ideo ideis · peretele amintirilor
               </span>
@@ -277,7 +288,7 @@ const LettersWall = ({
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 w-full">
           {paginatedLetters.map((letter) => (
             <LetterCard
               key={letter.id}
@@ -302,20 +313,20 @@ const LettersWall = ({
               type="button"
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
               disabled={currentPage <= 1}
-              className="inline-flex items-center gap-1.5 rounded border border-white/30 bg-white/10 px-4 py-2 text-body font-medium text-white hover:bg-white/20 disabled:pointer-events-none disabled:opacity-50 transition-colors"
+              className="inline-flex items-center gap-1.5 border border-white/30 bg-white/10 px-4 py-2 text-body font-medium text-white hover:bg-white/20 disabled:pointer-events-none disabled:opacity-50 transition-colors"
               aria-label="Pagina anterioară"
             >
               <ChevronLeft className="w-4 h-4" />
               înapoi
             </button>
-            <span className="text-sm text-white/80 tabular-nums">
+            <span className="text-detalii text-white/80 tabular-nums">
               pagina {currentPage} din {totalPages}
             </span>
             <button
               type="button"
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
               disabled={currentPage >= totalPages}
-              className="inline-flex items-center gap-1.5 rounded border border-white/30 bg-white/10 px-4 py-2 text-body font-medium text-white hover:bg-white/20 disabled:pointer-events-none disabled:opacity-50 transition-colors"
+              className="inline-flex items-center gap-1.5 border border-white/30 bg-white/10 px-4 py-2 text-body font-medium text-white hover:bg-white/20 disabled:pointer-events-none disabled:opacity-50 transition-colors"
               aria-label="Pagina următoare"
             >
               înainte

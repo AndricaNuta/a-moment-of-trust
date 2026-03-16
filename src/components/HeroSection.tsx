@@ -1,4 +1,5 @@
 import { ChevronDown } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 
 interface HeroSectionProps {
   heroImage: string;
@@ -9,20 +10,12 @@ const HeroSection = ({ heroImage }: HeroSectionProps) => {
     document.getElementById("story")?.scrollIntoView({ behavior: "smooth" });
   };
   const scrollToWrite = () => {
+    trackEvent({ event_type: "write_letter_clicked" });
     document.getElementById("write")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <section className="relative min-h-[70vh] sm:min-h-[80vh] lg:min-h-[85vh] flex items-center overflow-hidden bg-background pb-20 md:pb-0">
-      {/* Soft warm blob – one subtle shape for warmth */}
-      <div
-        className="absolute top-0 right-0 w-[80%] max-w-2xl h-[70%] rounded-full opacity-[0.07] pointer-events-none"
-        style={{
-          background: "radial-gradient(circle, hsl(var(--primary)) 0%, transparent 70%)",
-          transform: "translate(20%, -10%)",
-        }}
-      />
-
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-8 sm:py-12 lg:py-16 relative">
         <div className="grid lg:grid-cols-2 gap-6 sm:gap-10 lg:gap-16 items-center">
           <div className="order-2 lg:order-1 text-left">
@@ -44,7 +37,7 @@ const HeroSection = ({ heroImage }: HeroSectionProps) => {
 
             <button
               onClick={scrollToWrite}
-              className="group inline-flex items-center gap-2 bg-primary text-primary-foreground font-semibold px-5 py-2.5 rounded shadow-sm hover:bg-primary/90 hover:shadow transition-all duration-200"
+              className="group inline-flex items-center gap-2 bg-primary text-primary-foreground font-semibold px-5 py-2.5 shadow-sm hover:bg-primary/90 hover:shadow transition-all duration-200"
             >
               <span>scrie o scrisoare</span>
               <ChevronDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" />
@@ -56,7 +49,7 @@ const HeroSection = ({ heroImage }: HeroSectionProps) => {
               <img
                 src={heroImage}
                 alt="Un adolescent cu privirea spre viitor"
-                className="w-full aspect-[4/5] object-cover rounded shadow-lg photo-warm max-w-full"
+                className="w-full aspect-[4/5] object-cover shadow-lg photo-warm max-w-full"
                 fetchPriority="high"
                 decoding="async"
               />

@@ -2,22 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Ideo Ideis – brand guidelines ian24
-   Typography: Söhne (Leicht/Buch body, Halbfett headlines). Colours: #E7004C, #2c2d34.
+/* Ideo Ideis – brand guidelines [ideo ideis] work in progress, ian24
+   Typography: Söhne (Buch/Leicht body, Halbfett headlines). Colours: #E7004C, #2c2d34.
    Ierarhie: titlu general > titlu capitol > body text > detalii. Aliniere stânga. Geometrie dreaptă.
+   Font family: Söhne Leicht, Söhne Buch, Söhne Halbfett, Söhne Breit, Söhne Schmal.
 */
 
-/* Söhne – brand font family */
+/* Söhne – brand font family (woff2 first, otf fallback). Body = Söhne Buch (400), headlines = Söhne Halbfett (600). */
 @font-face {
   font-family: 'Söhne';
-  src: url('./assets/fonts/Söhne-Leicht.otf') format('opentype');
+  src: url('./assets/fonts/Söhne-Leicht.woff2') format('woff2'),
+       url('./assets/fonts/Söhne-Leicht.otf') format('opentype');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Söhne';
-  src: url('./assets/fonts/Söhne-Halbfett.otf') format('opentype');
+  src: url('./assets/fonts/Söhne-Buch.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Söhne';
+  src: url('./assets/fonts/Söhne-Halbfett.woff2') format('woff2'),
+       url('./assets/fonts/Söhne-Halbfett.otf') format('opentype');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -55,8 +65,8 @@
     --input: 40 12% 93%;
     --ring: 340 100% 45%;
 
-    /* Brand: geometrie dreaptă, unghiuri minime */
-    --radius: 0.25rem; /* 4px – minimal per brand */
+    /* Brand: geometrie dreaptă, fără colțuri rotunjite (DOs and DON'Ts) */
+    --radius: 0;
 
     --section-alt: 234 8% 19%; /* #2c2d34 for alternating sections */
     --section-alt-foreground: 0 0% 100%; /* text on dark section */
@@ -77,11 +87,11 @@
     --sidebar-border: 40 10% 90%;
     --sidebar-ring: 340 100% 45%;
 
-    /* Typography hierarchy – brand guidelines */
-    --font-titlu-general: 2rem;   /* cea mai mare */
-    --font-titlu-capitol: 1.5rem; /* aceeași grosime, mai mic */
-    --font-body: 1rem;
-    --font-detalii: 0.875rem;
+    /* Typography hierarchy – brand guidelines + feedback: titlu general > titlu capitol > body > detalii */
+    --font-titlu-general: 2rem;   /* cea mai mare dimensiune și grosime (Halbfett 600) */
+    --font-titlu-capitol: 1.5rem; /* aceeași grosime ca titlu general, dimensiune mai mică */
+    --font-body: 1rem;            /* grosime și dimensiune mai mici (Buch 400) */
+    --font-detalii: 0.875rem;     /* aceeași grosime ca body, dimensiune mai mică */
   }
 }
 
@@ -104,20 +114,31 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Söhne', system-ui, sans-serif;
-    font-weight: 300;
+    font-weight: 400; /* Söhne Buch for body copy per brand guidelines */
     font-size: var(--font-body);
     line-height: 1.65;
   }
 
-  /* Ierarhie tipografică – brand guidelines */
+  /* Ierarhie tipografică – brand guidelines + feedback: titlu general & titlu capitol = aceeași grosime (Halbfett) */
   h1, h2, h3 {
     font-family: 'Söhne', system-ui, sans-serif;
     font-weight: 600;
     line-height: 1.25;
   }
+
+  /* Titlu general & titlu capitol: mereu 600 când folosești clasele (inclusiv pe p/div) */
+  .text-titlu-general,
+  .text-titlu-capitol {
+    font-weight: 600;
+  }
+
+  /* Body & detalii: aceeași grosime (Buch 400); dimensiunea diferă prin text-body / text-detalii */
+  .text-detalii {
+    font-weight: 400;
+  }
 }
 
-/* Ierarhie: font-family moștenit de la body (Söhne). Titluri: font-semibold (600). */
+/* Ierarhie: Söhne Buch (400) body/detalii, Söhne Halbfett (600) titluri. */
 
 @layer utilities {
   .scroll-smooth {

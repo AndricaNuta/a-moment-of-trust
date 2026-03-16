@@ -10,6 +10,7 @@ import {
   fetchLetters,
   letterRowToLetter,
 } from "@/lib/letters";
+import { trackEvent } from "@/lib/analytics";
 
 // Import all images from assets (Vite glob – no one-by-one imports)
 const imageModules = import.meta.glob<{ default: string }>(
@@ -118,6 +119,11 @@ const Index = () => {
   }, [loadLetters]);
 
   useEffect(() => {
+    trackEvent({ event_type: "page_view" });
+  }, []);
+
+
+  useEffect(() => {
     const onFocus = () => loadLetters();
     window.addEventListener("focus", onFocus);
     return () => window.removeEventListener("focus", onFocus);
@@ -137,6 +143,7 @@ const Index = () => {
       throw new Error(result.error);
     }
     const newId = result.row.id;
+    trackEvent({ event_type: "letter_submitted", letter_id: newId });
     if (!letterData.isPrivate) {
       loadLetters();
     }

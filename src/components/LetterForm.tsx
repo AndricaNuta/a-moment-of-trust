@@ -390,19 +390,19 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
   return (
     <section id="write" className="py-14 lg:py-16 bg-background relative overflow-hidden">
       <div className="container mx-auto px-6 lg:px-12">
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <div className="text-left mb-10">
             <span className="text-detalii font-semibold tracking-wider text-primary">ideo ideis</span>
             <h2 className="text-titlu-capitol text-foreground mt-2 mb-2">
               scrie o scrisoare
             </h2>
             <p className="text-body text-muted-foreground max-w-lg">
-              scrie câteva rânduri sau încarcă video, audio sau poze — către tine, cel de la 16 ani, despre cine a avut încredere în tine atunci și ce a însemnat acel moment.
+              scrie câteva rânduri sau încarcă video, audio sau poze - către tine, cel de la 16 ani, despre cine a avut încredere în tine atunci și ce a însemnat acel moment.
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="relative">
-            <div className="note-paper letter-fold relative rounded p-6 md:p-8 pl-7 md:pl-9 bg-card text-foreground">
+            <div className="note-paper letter-fold relative p-6 md:p-8 pl-7 md:pl-9 bg-card text-foreground">
               <div className="mb-6">
                 <label className="block text-sm font-medium text-muted-foreground mb-2">
                   de la:
@@ -570,25 +570,25 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
 
                 <div className="pt-4 mt-4 space-y-3">
                   <p className="text-xs text-muted-foreground">
-                    Dacă nu bifezi „privată”, scrisoarea va apărea pe peretele amintirilor de pe site.
+                    dacă nu bifezi „privată”, scrisoarea va apărea pe peretele amintirilor de pe site.
                   </p>
                   <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
                     <label className="flex items-center gap-2 cursor-pointer">
                       <Checkbox
                         checked={isPrivate}
                         onCheckedChange={(v) => setIsPrivate(v === true)}
-                        className="rounded border-border h-3.5 w-3.5"
+                        className="border-border h-3.5 w-3.5"
                       />
-                      <span>Vreau să rămână privată</span>
+                      <span>vreau să rămână privată</span>
                     </label>
                     <label className="flex items-center gap-2 cursor-pointer">
                       <Checkbox
                         checked={promoConsent}
                         onCheckedChange={(v) => setPromoConsent(v === true)}
-                        className="rounded border-border h-3.5 w-3.5"
+                        className="border-border h-3.5 w-3.5"
                       />
                       <span>
-                        Sunt de acord cu{" "}
+                        sunt de acord cu{" "}
                         <Link to="/termeni" className="underline hover:text-foreground/80">
                           termenii și confidențialitatea
                         </Link>{" "}

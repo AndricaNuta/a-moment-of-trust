@@ -17,7 +17,8 @@ export default {
         sans: ['Söhne', 'system-ui', 'sans-serif'],
       },
       fontSize: {
-        'titlu-general': ['clamp(1.75rem, 4vw, 2.5rem)', { lineHeight: '1.2' }],
+        /* Titlul paginii (hero) – mare, vizibil */
+        'titlu-general': ['clamp(2.25rem, 6vw, 3.5rem)', { lineHeight: '1.2' }],
         'titlu-capitol': ['clamp(1.25rem, 2.5vw, 1.5rem)', { lineHeight: '1.25' }],
         'body': ['1rem', { lineHeight: '1.65' }],
         'detalii': ['0.875rem', { lineHeight: '1.5' }],
@@ -80,9 +81,10 @@ export default {
         },
       },
       borderRadius: {
+        DEFAULT: "var(--radius)",
         lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        md: "var(--radius)",
+        sm: "var(--radius)",
       },
       keyframes: {
         "accordion-down": {

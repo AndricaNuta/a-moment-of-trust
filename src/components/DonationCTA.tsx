@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { trackEvent } from "@/lib/analytics";
 
 const DonationCTA = () => {
   return (
@@ -36,6 +37,7 @@ const DonationCTA = () => {
                 <a
                   href="https://ideoideis.ro/doneaza/"
                   target="_top"
+                  onClick={() => trackEvent({ event_type: "donation_clicked", button: "doneaza" })}
                 >
                   donează
                 </a>
@@ -49,6 +51,7 @@ const DonationCTA = () => {
                 <a
                   href="https://ideoideis.ro/doneaza/"
                   target="_top"
+                  onClick={() => trackEvent({ event_type: "donation_clicked", button: "3,5" })}
                 >
                   3,5%
                 </a>
