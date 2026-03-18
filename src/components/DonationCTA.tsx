@@ -28,11 +28,11 @@ const DonationCTA = () => {
               ))}
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-6">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
               <Button
                 asChild
                 size="lg"
-                className="bg-background text-primary hover:bg-background/90 font-semibold"
+                className="bg-background text-primary hover:bg-background/90 font-semibold text-lg px-10 py-6"
               >
                 <a
                   href="https://ideoideis.ro/doneaza/"
@@ -46,7 +46,7 @@ const DonationCTA = () => {
                 asChild
                 size="lg"
                 variant="outline"
-                className="border-2 border-primary-foreground bg-transparent text-primary-foreground hover:bg-primary-foreground/15"
+                className="border-2 border-primary-foreground bg-transparent text-primary-foreground hover:bg-primary-foreground/15 text-lg px-10 py-6"
               >
                 <a
                   href="https://ideoideis.ro/doneaza/"

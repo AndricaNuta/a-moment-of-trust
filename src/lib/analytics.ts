@@ -15,6 +15,13 @@ export type AnalyticsEvent =
 export async function trackEvent(event: AnalyticsEvent): Promise<void> {
   if (!supabase) return;
 
+  // High-volume events: aggregate into daily counters (one row per day, not per event)
+  if (event.event_type === "page_view") {
+    await supabase.rpc("increment_analytics", { p_event_type: "page_view" });
+    return;
+  }
+
+  // Lower-volume events: keep one row per event (letter_id, platform, etc. matter)
   const payload: Record<string, unknown> = {};
   if ("letter_id" in event && event.letter_id) payload.letter_id = event.letter_id;
   if ("from_share_link" in event && event.from_share_link)

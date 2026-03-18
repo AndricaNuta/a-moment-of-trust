@@ -397,7 +397,7 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
               scrie o scrisoare
             </h2>
             <p className="text-body text-muted-foreground max-w-lg">
-              scrie câteva rânduri sau încarcă video, audio sau poze - către tine, cel de la 16 ani, despre cine a avut încredere în tine atunci și ce a însemnat acel moment.
+              scrie câteva rânduri sau încarcă video, audio sau poze - către tine, cel de la 16 ani și povestește-ne despre cine a avut încredere în tine atunci și ce a însemnat acel moment.
             </p>
           </div>
 
