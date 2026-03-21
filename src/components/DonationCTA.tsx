@@ -7,12 +7,12 @@ const DonationCTA = () => {
         <div className="container mx-auto px-6 lg:px-12 relative">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-titlu-capitol mb-3">
-              cineva a avut încredere în tine la 16 ani.
+              cineva a avut încredere în tine la 16 ani
               <br />
-              acum e rândul tău.
+              acum e rândul tău
             </h2>
             <p className="text-body text-primary-foreground/90 max-w-lg mx-auto mb-6">
-              prin donație directă sau redirecționarea a 3,5% din impozit, ajuți un adolescent să întâlnească acel „cineva” la momentul potrivit.
+              prin donație directă sau redirecționarea a 3,5% din impozit, ajuți un adolescent să întâlnească acel „cineva” la momentul potrivit
             </p>
 
             <div className="grid grid-cols-3 gap-4 mb-8 max-w-sm mx-auto">
@@ -59,7 +59,7 @@ const DonationCTA = () => {
             </div>
 
             <p className="text-detalii text-primary-foreground/80 max-w-md mx-auto text-left">
-              <strong>3,5%:</strong> redirecționezi din impozit către ideo ideis, fără cost pentru tine.
+              <strong>3,5%:</strong> redirecționezi din impozit către ideo ideis, fără cost pentru tine
             </p>
           </div>
         </div>

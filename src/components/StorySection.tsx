@@ -18,7 +18,7 @@ const StorySection = () => {
               toți am avut pe cineva
             </h2>
             <p className="text-body text-white/85 max-w-xl">
-              scrie o scrisoare versiunii tale de la 16 ani și amintește-ți cine a avut încredere în tine atunci. povestea ta îi poate inspira pe alții, iar printr-o donație poți face ca și alți adolescenți să aibă, la rândul lor, pe cineva care are încredere în ei.
+              scrie o scrisoare versiunii tale de la 16 ani și amintește-ți cine a avut încredere în tine atunci. povestea ta îi poate inspira pe alții, iar printr-o donație poți face ca și alți adolescenți să aibă, la rândul lor, pe cineva care are încredere în ei
             </p>
           </div>
 

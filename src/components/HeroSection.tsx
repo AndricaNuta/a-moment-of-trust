@@ -24,15 +24,15 @@ const HeroSection = ({ heroImage }: HeroSectionProps) => {
             </p>
 
             <h1 className="text-titlu-general text-foreground mb-3">
-              cineva a avut încredere în mine la 16 ani.
+              cineva a avut încredere în mine la 16 ani
             </h1>
 
             <p className="text-titlu-capitol text-foreground/90 leading-snug mb-4">
-              astăzi poți fi tu acel „cineva” pentru un alt adolescent.
+              astăzi poți fi tu acel „cineva” pentru un alt adolescent
             </p>
 
             <p className="text-body text-muted-foreground max-w-lg mb-6">
-              întoarce-te pentru câteva minute la tine, cel de la 16 ani. scrie-i o scrisoare și amintește-ți cine ți-a spus prima dată „cred în tine”. apoi ajută-ne să oferim mai departe acea încredere.
+              întoarce-te pentru câteva minute la tine, cel de la 16 ani. scrie-i o scrisoare și amintește-ți cine ți-a spus prima dată „cred în tine”. apoi ajută-ne să oferim mai departe acea încredere
             </p>
 
             <button

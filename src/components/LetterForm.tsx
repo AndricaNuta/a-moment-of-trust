@@ -397,7 +397,7 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
               scrie o scrisoare
             </h2>
             <p className="text-body text-muted-foreground max-w-lg">
-              scrie câteva rânduri sau încarcă video, audio sau poze - către tine, cel de la 16 ani și povestește-ne despre cine a avut încredere în tine atunci și ce a însemnat acel moment.
+              scrie câteva rânduri sau încarcă video, audio sau poze - către tine, cel de la 16 ani și povestește-ne despre cine a avut încredere în tine atunci și ce a însemnat acel moment
             </p>
           </div>
 
@@ -570,7 +570,7 @@ const LetterForm = ({ onSubmit }: LetterFormProps) => {
 
                 <div className="pt-4 mt-4 space-y-3">
                   <p className="text-xs text-muted-foreground">
-                    dacă nu bifezi „privată”, scrisoarea va apărea pe peretele amintirilor de pe site.
+                    dacă nu bifezi „privată”, scrisoarea va apărea pe peretele amintirilor de pe site
                   </p>
                   <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
                     <label className="flex items-center gap-2 cursor-pointer">
