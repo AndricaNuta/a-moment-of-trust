@@ -12,14 +12,25 @@ import {
 } from "@/lib/letters";
 import { trackEvent } from "@/lib/analytics";
 
-// Import all images from assets (Vite glob – no one-by-one imports)
+// All images under `src/assets` (any subfolder). Dome excludes hero + two gallery-trust slots only.
 const imageModules = import.meta.glob<{ default: string }>(
-  "/src/assets/*.{jpg,jpeg,png,gif,webp}",
+  "/src/assets/**/*.{jpg,jpeg,png,gif,webp}",
   { eager: true }
 );
 const imageEntries = Object.entries(imageModules) as [string, { default: string }][];
 const allImageUrls = imageEntries.map(([, mod]) => mod.default);
-const heroImageUrl = imageEntries.find(([path]) => path.includes("hero"))?.[1].default ?? allImageUrls[0];
+
+const isExcludedFromDome = (assetPath: string) =>
+  /\/hero-teen-1\.[^/]+$/i.test(assetPath) ||
+  /\/gallery-trust-2\.[^/]+$/i.test(assetPath) ||
+  /\/gallery-trust-3\.[^/]+$/i.test(assetPath);
+
+const heroImageUrl =
+  imageEntries.find(([path]) => /\/hero-teen-1\.[^/]+$/i.test(path))?.[1].default ??
+  allImageUrls[0];
+const galleryImages = imageEntries
+  .filter(([path]) => !isExcludedFromDome(path))
+  .map(([, mod]) => mod.default);
 
 interface Letter {
   id: string;
@@ -73,8 +84,6 @@ const Index = () => {
   const [letters, setLetters] = useState<Letter[]>(sampleLetters);
   const [highlightLetterId, setHighlightLetterId] = useState<string | null>(null);
   const [openLetterIdFromUrl, setOpenLetterIdFromUrl] = useState<string | null>(null);
-
-  const galleryImages = allImageUrls;
 
   // Open shared letter when URL has #letter-<id> (e.g. when embedded in iframe and parent passes hash into iframe src)
   useEffect(() => {
